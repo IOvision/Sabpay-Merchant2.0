@@ -1,15 +1,20 @@
 import React from 'react'
 import { FlatList } from 'react-native'
 import ProfilePageOrdersItem from '../atoms/ProfilePageOrdersItem'
+import Order from '../../models/Order'
 
-export default function ProfilePageOrdersFlatList({navigation}) {
-    const DATA = [2,3,4]
+export interface Props {
+    navigation: any, 
+    data: Order[]
+}
+const ProfilePageOrdersFlatList: React.FC<Props> = ({navigation, data}) => {
     return (
         <FlatList
-            data={DATA}
+            data={data}
             horizontal={true}
-            renderItem={() => <ProfilePageOrdersItem navigation={navigation} />}
-            keyExtractor={item => item.toString()}
+            renderItem={({item, index}) => <ProfilePageOrdersItem navigation={navigation} item={item}/>}
+            keyExtractor={(item, index) => index.toString()}
         />
     )
 }
+export default ProfilePageOrdersFlatList

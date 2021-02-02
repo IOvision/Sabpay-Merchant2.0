@@ -10,19 +10,19 @@ interface Style {
 
 const TextStyles = StyleSheet.create<Style>({
     headerText: {
-        fontSize: 16,
+        fontSize: 18,
         marginBottom: 2,
         fontFamily: 'OpenSans-SemiBold',
         letterSpacing: 0.1
     },
     bodyText: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "400",
         maxWidth: 250,
         marginBottom: 4
     },
     captionText: {
-        fontSize: 18,
+        fontSize: 20,
         marginBottom: 2,
         color: Colors.darkgrey,
         fontFamily: 'OpenSans-Bold',

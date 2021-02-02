@@ -12,7 +12,7 @@ export interface Props {
 const StoreItemItem: React.FC<Props> = ({item, navigation}) => {
     console.log(Object.keys(item))
     return (
-        <TouchableOpacity style={{...styles.container, margin: 2, width: '49%'}} onPress={() => navigation.navigate("ItemDetailTab", {
+        <TouchableOpacity style={{...styles.container, margin: 2, width: '49%'}} onPress={() => navigation.push("ItemDetailTab", {
             item: item,
             selected: 0
         })} activeOpacity={0.9}>

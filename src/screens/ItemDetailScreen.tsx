@@ -24,12 +24,7 @@ const ItemDetailScreen: React.FC<Props> = ({route}) => {
                     onPress={() => setSelected(element.key)}
                     style={{marginHorizontal: 5}}
                 >
-                    <InfoBox text={element.name} />
-                    <RoundView style={element.key === selected ? [styles.childContainer, styles.childSelected] : styles.childContainer}>
-                        <HeaderText style={element.key === selected ? styles.childSelected : {color: colors.mediumGrey}}>
-                            {element.name}
-                        </HeaderText>
-                    </RoundView>
+                    <InfoBox text={element.name} style={element.key === selected ? [styles.childContainer, styles.childSelected] : styles.childContainer}/>
                 </TouchableOpacity>
             )
         })
@@ -79,7 +74,7 @@ const styles = StyleSheet.create({
         borderWidth: 1, 
         backgroundColor: 'white', 
         elevation: 2, 
-        padding: 15,
+        padding: 10,
         borderColor: colors.mediumGrey
     },
     childSelected: {

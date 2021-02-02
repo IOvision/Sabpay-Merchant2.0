@@ -25,7 +25,7 @@ const Header: React.FC<Props> = ({marginTop, navigation, back, title, color}) =>
               </View>
             ) : (
               <View style={{marginStart: 20, alignSelf: 'center'}}>
-                <Icon style={HeaderStyle.start_icon} name="arrow-left" color={Colors.primary} size={24} onPress={back} />
+                <Icon style={HeaderStyle.start_icon} name="arrow-left" color={Colors.primary} size={24} />
               </View>
             )
         }

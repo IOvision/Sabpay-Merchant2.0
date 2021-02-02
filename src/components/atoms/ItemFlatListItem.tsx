@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image } from 'react-native';
 import { OrdersItemStyles } from '../../styles/FlatListItemStyle'
-import { HeaderText } from '../atoms/Text'
+import { BodyText, HeaderText } from '../atoms/Text'
 import InfoBox from '../atoms/InfoBox'
 import CartItem from '../../models/CartItem'
 
@@ -18,7 +18,10 @@ const ItemFlatListItem: React.FC<Props> = ({image, item}) => {
                 <HeaderText>{item.name}</HeaderText>
                 <View style={{...OrdersItemStyles.row}}>
                     <InfoBox text={item.variant}/>
-                    <InfoBox text={item.quantity}/>
+                    <View style={{...OrdersItemStyles.row, alignItems: "center"}}>
+                        <BodyText>Quantity: </BodyText>
+                        <InfoBox text={item.quantity} style={{paddingVertical: 1}}/>
+                    </View>
                 </View>
             </View>
         </View>
