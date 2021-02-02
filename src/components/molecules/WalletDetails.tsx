@@ -10,7 +10,7 @@ export default function WalletDetails() {
             <BodyText>Wallet Balance</BodyText>
             <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <CaptionText style={{fontSize: 26}}>Rs. 7000</CaptionText>
-                <PurpleRoundBtn text="Winthdraw"/>
+                <PurpleRoundBtn text="Withdraw"/>
             </View>
         </RoundView>
     )

@@ -41,9 +41,7 @@ const PurpleRoundBtn: React.FC<Props> = ({onPress, text, style, color, textStyle
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
             <View style={[styles.container, style]}>
-                {/* <LinearGradient style={[styles.container, props.style]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#8021EB', '#04035C']}> */}
-                    <HeaderText style={{color: color ? color :"white", ...(textStyle as object)}}>{text}</HeaderText>
-                {/* </LinearGradient> */}
+                <HeaderText style={{color: color ? color :"white", ...(textStyle as object)}}>{text}</HeaderText>
             </View >
         </TouchableOpacity>
     )

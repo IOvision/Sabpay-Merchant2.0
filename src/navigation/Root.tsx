@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 
 import HelpTab from '../screens/HelpTab'
 import RootDrawer from './RootDrawer'
+import OrderDetailTab from '../screens/OrderDetailTab'
 
 const MainStack: React.FC = () => {
   return (
@@ -25,6 +26,17 @@ const MainStack: React.FC = () => {
         <Stack.Screen
           name="HelpTab"
           component={HelpTab}
+          options={{
+            header: ({ scene, previous, navigation}) => {
+              return (
+                <Header back={() => navigation.pop()} navigation={navigation} />
+              )
+            }
+          }}
+        />
+        <Stack.Screen
+          name="OrderDetailTab"
+          component={OrderDetailTab}
           options={{
             header: ({ scene, previous, navigation}) => {
               return (

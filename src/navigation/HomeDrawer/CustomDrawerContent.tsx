@@ -5,9 +5,6 @@ import {
     DrawerItemList
  } from '@react-navigation/drawer'
 import colors from '../../assets/colors'
-import { Auth } from 'aws-amplify'
-import { connect } from 'react-redux'
-
 
 export interface Props {
 
@@ -16,7 +13,7 @@ export interface Props {
 const CustomDrawerContent: React.FC<Props> = (props) => {
     return (
         <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} inactiveTintColor={colors.darkgrey} activeTintColor={colors.primary} />
+            <DrawerItemList {...props} inactiveTintColor={colors.white} activeTintColor={colors.white} />
             {/* {
                 props.isSignedIn ? (
                     <DrawerItem

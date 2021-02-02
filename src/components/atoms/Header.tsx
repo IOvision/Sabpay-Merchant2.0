@@ -35,23 +35,11 @@ const Header: React.FC<Props> = ({marginTop, navigation, back, title, color}) =>
   )
   
   return (
-    <View>
-      <View style={[HeaderStyle.container]}>
-        {
-            !back ? (
-              <View style={{flex: 1, justifyContent: 'center', marginStart: 20}}>
-                <Icon style={HeaderStyle.start_icon} name="menu" color={Colors.primary} size={24} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
-              </View>
-            ) : (
-              <View style={{flex: 1, justifyContent: 'center', marginStart: 20}}>
-                <Icon style={HeaderStyle.start_icon} name="arrow-left" color={Colors.primary} size={24} onPress={back} />
-              </View>
-            )
-        }
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          {/* <Image source={image} style={HeaderStyle.logo} /> */}
-        </View>
-        <View style={{flex: 1, justifyContent: 'center', marginRight: 20}} />
+    <View style={[HeaderStyle.container]}>
+      <Icon name="menu" color={Colors.primary} size={24} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
+      <View style={{display: "flex", flexDirection: "row"}}>
+        <Icon style={{marginHorizontal: 30}} name="bell" color={Colors.primary} size={24} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
+        <Icon name="plus-circle-outline" color={Colors.primary} size={24} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
       </View>
     </View>
   );
