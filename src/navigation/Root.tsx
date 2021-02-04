@@ -12,11 +12,14 @@ import OrderDetailTab from '../screens/OrderDetailTab'
 import ItemDetailScreen from '../screens/ItemDetailScreen'
 import ChooseCategory from '../screens/ChooseCategory'
 import ChooseTag from '../screens/ChooseTag'
+import SignUpTab from '../screens/SignUpTab'
+import LoginTab from '../screens/LoginTab'
 
 const MainStack: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName={"LoginTab"}
         screenOptions={{
           header: ({ scene, previous, navigation}) => {
               return (
@@ -25,6 +28,28 @@ const MainStack: React.FC = () => {
           }
       }}>
         <Stack.Screen name="Main" component={RootDrawer} />
+        <Stack.Screen
+          name="LoginTab"
+          component={LoginTab}
+          options={{
+            header: ({ scene, previous, navigation}) => {
+              return (
+                <StackHeader text="Log-In" navigation={navigation} />
+              )
+            }
+          }}
+        />
+        <Stack.Screen
+          name="SignUpTab"
+          component={SignUpTab}
+          options={{
+            header: ({ scene, previous, navigation}) => {
+              return (
+                <StackHeader text="SignUp" navigation={navigation} />
+              )
+            }
+          }}
+        />
         <Stack.Screen
           name="OrderDetailTab"
           component={OrderDetailTab}
