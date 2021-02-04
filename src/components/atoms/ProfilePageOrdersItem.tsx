@@ -12,7 +12,7 @@ export interface Props {
 }
 const ProfilePageOrdersItem: React.FC<Props> = ({navigation, item}) => {
     return (
-        <TouchableOpacity onPress={() => navigation.push("OrderDetailTab", {item: item})} activeOpacity={0.9}>
+        <TouchableOpacity onPress={() => navigation.push("OrderDetailTab", {item: item, newOrder: false})} activeOpacity={0.9}>
         <RoundView style={{marginTop: 20, marginLeft: 25, marginBottom: 70}}>
             <View style={styles.row}>
                 <Icon name="account" color={Colors.primary} size={24} style={{marginEnd: 10}}/>

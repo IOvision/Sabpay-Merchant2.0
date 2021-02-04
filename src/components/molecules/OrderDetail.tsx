@@ -13,7 +13,7 @@ export interface Props {
 }
 const OrderDetail: React.FC<Props> = ({item}) => {
     return (
-        <View style={{paddingTop: 20, padding: 25, marginBottom: 70, borderTopWidth: 1, borderColor: colors.mediumGrey}}>
+        <View style={{paddingTop: 20, padding: 25, borderTopWidth: 1, borderColor: colors.mediumGrey}}>
             <View style={styles.row}>
                 <Icon name="account" color={colors.primary} size={24} style={{marginEnd: 10}}/>
                 <BodyText>{item.user.name}</BodyText>

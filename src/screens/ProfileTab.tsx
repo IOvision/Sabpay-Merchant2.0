@@ -9,7 +9,7 @@ export default function ProfileTab({navigation}) {
     const DATA = [{
         "deliveryType": "Pick-Up",
         "discount": "0",
-        "GS1_PK": "USR#9650625937",
+        "GS1_PK": "USR#9999999999",
         "items": [
           {
             "image": "https://raw.githubusercontent.com/IOvision/assets/master/images/Bakery%20and%20Dairy/amul_toned_milk.JPG",
@@ -32,14 +32,14 @@ export default function ProfileTab({navigation}) {
         "status": "RECEIVED",
         "total": "22",
         "user": {
-          "address": "pkt 18 sector 24 rohini",
-          "name": "Sakshi Jain",
-          "phone": "+919650625937"
+          "address": "Knowledge Park III, greater noida",
+          "name": "Riya Mehra",
+          "phone": "+919999999999"
         }
       },{
         "deliveryType": "Express",
         "discount": "0",
-        "GS1_PK": "USR#9650625937",
+        "GS1_PK": "USR#1111111111",
         "items": [
           {
             "image": "https://raw.githubusercontent.com/IOvision/assets/master/images/Bakery%20and%20Dairy/amul_toned_milk.JPG",
@@ -72,9 +72,9 @@ export default function ProfileTab({navigation}) {
         "status": "RECEIVED",
         "total": "49",
         "user": {
-          "address": "254-255 pkt 18 sector 24 rohini",
-          "name": "Sakshi Jain",
-          "phone": "+919650625937"
+          "address": "Alpha Rd, Alpha-I Commercial Belt, Block A, Alpha I, Greater Noida, Uttar Pradesh 201310",
+          "name": "Sanyam Garg",
+          "phone": "+911111111111"
         }
       }]
     return (
@@ -84,7 +84,7 @@ export default function ProfileTab({navigation}) {
                 <CaptionText style={{marginTop: 50, marginLeft: 30}}>Order Status</CaptionText>
                 <CaptionText style={{marginTop: 50, marginRight: 30, color: colors.primary}}>See All</CaptionText>
             </View>
-            <ProfilePageOrdersFlatList navigation={navigation} data={DATA}/>
+            <ProfilePageOrdersFlatList navigation={navigation} data={DATA} />
         </View>
     )
 }

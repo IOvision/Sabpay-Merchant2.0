@@ -31,3 +31,45 @@ export const OrdersItemStyles = StyleSheet.create<StyleOrderItem>({
     marginTop: 10
   }
 })
+
+interface StyleCategoryPageCategoryItem {
+  container: ViewStyle,
+  image: ViewStyle,
+  text: TextStyle,
+  textContainer: ViewStyle
+}
+
+export const CategoryPageCategoryItemStyles = StyleSheet.create<StyleCategoryPageCategoryItem>({
+  container: {
+      borderTopLeftRadius: 22,
+      borderTopRightRadius: 22,
+      width: '100%',
+      height: 200,
+      marginBottom: 40,
+      borderWidth: 1,
+      borderColor: colors.mediumGrey
+    },
+    image: {
+      width: `100%`,
+      height: 200,
+      resizeMode: 'cover',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+    text: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      color: colors.darkgrey,
+    },
+    textContainer: {
+      alignItems: 'center',
+      backgroundColor: colors.white,
+      position: 'absolute',
+      padding: 13,
+      bottom: -20,
+      width: '100%',
+      borderRadius: 15,
+      borderWidth: 1,
+      borderColor: colors.mediumGrey,
+    },
+})

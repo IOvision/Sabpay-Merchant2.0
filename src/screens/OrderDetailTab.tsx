@@ -1,28 +1,49 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, FlatList, SafeAreaView } from 'react-native'
 import ItemFlatList from '../components/molecules/ItemFlatList'
 import { HeaderText } from '../components/atoms/Text'
 import OrderDetail from '../components/molecules/OrderDetail'
-import { ScrollView } from 'react-native-gesture-handler'
 import colors from '../assets/colors'
 import Order from '../models/Order'
+import ItemFlatListItem from '../components/atoms/ItemFlatListItem'
 export interface Props {
-  navigation: any, 
+  navigation: any,
   route: {
     params: {
-      item: Order   
+      item: Order,
+      newOrder: Boolean 
     }
   }
 }
 const OrderDetailTab: React.FC<Props> = ({navigation, route}) => {
     return (
         <View style={{display: "flex", flex: 1, backgroundColor: "white"}}>
-            <ScrollView>
-              <OrderDetail item={route.params.item}/>
-              <ItemFlatList navigation={navigation} data={route.params.item.items} style={{}}/>
-            </ScrollView>
+              <FlatList
+                data={route.params.item.items}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({item, index}) => {
+                return <ItemFlatListItem  
+                    image={"https://raw.githubusercontent.com/IOvision/assets/master/images/Bakery%20and%20Dairy/amul_butter.JPG"} 
+                    item={item} />;
+                }}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={() => {return <OrderDetail item={route.params.item}/>}}
+            />
             <View style={{borderStyle: "solid", borderTopWidth: 1, borderTopColor: colors.mediumGrey}}>
-              <HeaderText style={{color: colors.green, alignSelf: "center", padding: 15}}>{route.params.item.status}</HeaderText>
+              {
+                route.params.newOrder ? (
+                  <View style={{display: "flex", flexDirection: "row",height: 50, alignItems: "center"}}>
+                    <View style={{width: '50%', borderColor: colors.mediumGrey, borderWidth: 1, borderStyle: "solid"}}>
+                    <HeaderText style={{color: colors.green, alignSelf: "center", padding: 15}}>Accept</HeaderText>
+                    </View>
+                    <View style={{width: '50%', borderColor: colors.mediumGrey, borderWidth: 1, borderStyle: "solid"}}>
+                    <HeaderText style={{color: colors.danger, alignSelf: "center", padding: 15}}>Reject</HeaderText>
+                    </View>
+                  </View>
+                ) : (
+                  <HeaderText style={{color: colors.green, alignSelf: "center", padding: 15}}>{route.params.item.status}</HeaderText>
+                )
+              }
             </View>
         </View>
     )
