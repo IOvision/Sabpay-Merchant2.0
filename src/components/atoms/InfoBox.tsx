@@ -3,9 +3,10 @@ import { View, StyleSheet } from 'react-native'
 import { BodyText } from './Text'
 import colors from '../../assets/colors'
 
-export default function InfoBox({text, style}) {
+export default function InfoBox({text, style, children}) {
     return (
         <View style={[styles.container, style]}>
+            {children}
             <BodyText>{text}</BodyText>
         </View>
     )

@@ -34,7 +34,7 @@ export default function ProfileTab({navigation}) {
         "user": {
           "address": "Knowledge Park III, greater noida",
           "name": "Riya Mehra",
-          "phone": "+919999999999"
+          "phone": "+919650625937"
         }
       },{
         "deliveryType": "Express",
@@ -74,7 +74,7 @@ export default function ProfileTab({navigation}) {
         "user": {
           "address": "Alpha Rd, Alpha-I Commercial Belt, Block A, Alpha I, Greater Noida, Uttar Pradesh 201310",
           "name": "Sanyam Garg",
-          "phone": "+911111111111"
+          "phone": "+919990516988"
         }
       }]
     return (

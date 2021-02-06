@@ -12,6 +12,7 @@ export interface Props {
 }
 
 const CategoryPageCategoryListItem: React.FC<Props> = ({image, title, onPress, index}) => {
+    console.log(image)
     return (
         <View style={{ ...CategoryPageCategoryItemStyles.container, backgroundColor: randomColor[index % colorLength]}}>
             <TouchableOpacity activeOpacity={0.9} style={CategoryPageCategoryItemStyles.container} onPress={onPress}>

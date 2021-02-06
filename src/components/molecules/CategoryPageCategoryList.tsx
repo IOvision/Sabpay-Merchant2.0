@@ -16,8 +16,8 @@ const CategoryPageCategoryList: React.FC<Props> = ({data, style, navigation}) =>
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => {
                 return <CategoryPageCategoryListItem index={index} 
-                    image={"https://raw.githubusercontent.com/IOvision/assets/master/images/Bakery%20and%20Dairy/amul_butter.JPG"} 
-                    title={item.replace(/_/gi, " ")} 
+                    image={item.image} 
+                    title={item.title} 
                     onPress={() => navigation.push("ChooseTag", {
                         category: item
                     })}/>;

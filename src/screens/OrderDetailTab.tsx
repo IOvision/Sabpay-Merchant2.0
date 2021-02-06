@@ -23,7 +23,7 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route}) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => {
                 return <ItemFlatListItem  
-                    image={"https://raw.githubusercontent.com/IOvision/assets/master/images/Bakery%20and%20Dairy/amul_butter.JPG"} 
+                    image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStV5V5RgqgZ5sJJtjY49woXC7_v6bZ4ibmrQ&usqp=CAU"} 
                     item={item} />;
                 }}
                 showsVerticalScrollIndicator={false}

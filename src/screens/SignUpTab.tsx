@@ -3,6 +3,7 @@ import SignUpTabPhone from '../components/molecules/SignUpTabPhone'
 import SignUpTabOtp from '../components/molecules/SignUpTabOtp'
 import SignUpTabInfo from '../components/molecules/SignUpTabInfo'
 import SignUpTabPic from '../components/molecules/SignUpTabPic'
+import SignUpTabMore from '../components/molecules/SignUpTabMore'
 
 export interface Props {
     navigation: any
@@ -24,8 +25,10 @@ const SignUpTab: React.FC<Props> = ({navigation}) => {
             <SignUpTabInfo navigation={navigation} setState={setState}/>
         )
     }
-    if(state == "pic") {
-        <SignUpTabPic navigation={navigation} setState={setState}/>
+    if(state == "more") {
+        return (
+            <SignUpTabMore navigation={navigation} setState={setState}/>
+        )
     }
 }
 
