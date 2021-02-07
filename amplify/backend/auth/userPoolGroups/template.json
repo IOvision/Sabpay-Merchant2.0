@@ -1,0 +1,68 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "authSabpayAmplifyUserPoolId": {
+            "Type": "String",
+            "Default": "authSabpayAmplifyUserPoolId"
+        },
+        
+        "authSabpayAmplifyAppClientID": {
+            "Type": "String",
+            "Default": "authSabpayAmplifyAppClientID"
+        },
+        "authSabpayAmplifyAppClientIDWeb": {
+            "Type": "String",
+            "Default": "authSabpayAmplifyAppClientIDWeb"
+        },
+        "AuthRoleArn": {
+            "Type": "String"
+        },
+        "UnauthRoleArn": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        }
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+    
+        "usersGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "users",
+              "Precedence" : 1,
+              
+              "UserPoolId" : {
+                "Ref": "authSabpayAmplifyUserPoolId"
+              } 
+            }
+        },
+        
+    
+        "merchantGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "merchant",
+              "Precedence" : 2,
+              
+              "UserPoolId" : {
+                "Ref": "authSabpayAmplifyUserPoolId"
+              } 
+            }
+        },
+        
+    
+    
+    },
+    
+}
