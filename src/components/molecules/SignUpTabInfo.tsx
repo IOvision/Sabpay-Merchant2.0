@@ -28,9 +28,6 @@ const SignUpTabInfo: React.FC<Props> = ({navigation, setState}) => {
                 <InputText value={landmark} placeholder="Landmark" onChangeText={setLandmark}/>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
                     <PurpleRoundBtn text="Next" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => setPresent("advance")}/>
-                    <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.push("LoginTab")}>
-                        <BodyText>Already Have an Account? <HeaderText style={{color: colors.primary}}>Log-In</HeaderText></BodyText>
-                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -42,9 +39,6 @@ const SignUpTabInfo: React.FC<Props> = ({navigation, setState}) => {
             <InputText value={pan} placeholder="PAN Number" onChangeText={setPan}/>
             <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
                 <PurpleRoundBtn text="Next" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => setState("more")}/>
-                <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.push("LoginTab")}>
-                    <BodyText>Already Have an Account? <HeaderText style={{color: colors.primary}}>Log-In</HeaderText></BodyText>
-                </TouchableOpacity>
             </View>
         </View>
     )

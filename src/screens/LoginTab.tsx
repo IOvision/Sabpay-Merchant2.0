@@ -4,24 +4,89 @@ import InputText from '../components/atoms/InputText'
 import {BodyText, HeaderText} from '../components/atoms/Text'
 import colors from '../assets/colors'
 import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
+import { signIn } from '../redux/actions/user'
+import { connect } from 'react-redux';
+import SmsRetriever from 'react-native-sms-retriever'
+import { Auth } from 'aws-amplify'
+
 
 export interface Props {
-    navigation: any
+    navigation: any,
+    setSignedIn: () => void
 }
 const LoginTab: React.FC<Props> = ({navigation}) => {
     const [phone, setPhone] = useState("")
     const [otp, setOtp] = useState("")
     const [state, setState] = useState("phone")
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(false)
+
+
+    const validateNumber = (number: string) => {
+        return number.length == 10;
+    }
+
+    const signUp = async () => {
+        if(validateNumber(phone)) {
+            try {
+                const { user } = await Auth.signUp({
+                    username: `+91${phone}`,
+                    password: Date.now().toString()
+                })
+                startSmsListener()
+                console.log(user)
+            } catch (error) {
+                if (error.code === "UsernameExistsException")
+                startSmsListener()
+            }
+            setState("otp")
+        } else {
+            setError(true)
+        }
+    }
+
+    const startSmsListener = async () => {
+        try {
+            setIsLoading(true)
+            signIn()
+            const registered = await SmsRetriever.startSmsRetriever()
+            if (registered) {
+                SmsRetriever.addSmsListener(event => {
+                    const a = /(\d{4})/g.exec(event.message)[1]
+                    SmsRetriever.removeSmsListener()
+                    confirmSignIn(a)
+                })
+            }
+        } catch (error) {
+            setIsLoading(false)
+        }  
+    }
+
+    const confirmSignIn = async (otp: string) => {
+        // try {
+        //     const data = await Auth.sendCustomChallengeAnswer(user, otp);
+        //     getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
+        //         if (err) {
+        //             if(err === 'signup'){
+        //                 navigation.navigate('Signup')
+        //             }
+        //         }
+        //         AsyncStorage.setItem('@User', JSON.stringify(resp))
+        //         setSignedIn(resp)
+        //     })
+        //     close()
+        // } catch (error) {
+        //     console.log('error', error)
+        // }
+    }
+
     if(state == "phone") {
         return (
             <View style={styles.container}>
-                <InputText value={phone} placeholder="" onChangeText={setPhone} preText={"+91"} style={{marginHorizontal: 40, marginTop: 100, marginBottom: 10}}/>
+                <InputText value={phone} placeholder="" onChangeText={setPhone} preText={"+91"} style={{marginHorizontal: 40, marginTop: 100, marginBottom: 10}} editable={true} error={error ? "Invalid" : ""} keyboardType={"phone-pad"}/>
                 <BodyText style={{color: colors.grey, marginHorizontal: 40}}>An Otp would be sent to verify your Mobile Number</BodyText>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                    <PurpleRoundBtn text="Next" style={{paddingHorizontal: 100, marginBottom: 10}} onPress={() => setState("otp")}/>
-                    <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.push("SignUpTab")}>
-                        <BodyText>Don't Have an Account? <HeaderText style={{color: colors.primary}}>Sign Up</HeaderText></BodyText>
-                    </TouchableOpacity>
+                    <PurpleRoundBtn onPress={signUp} text="Next" style={{paddingHorizontal: 100, marginBottom: 10}} />
                 </View>
             </View>
         )
@@ -33,15 +98,18 @@ const LoginTab: React.FC<Props> = ({navigation}) => {
                 <HeaderText style={{color: colors.primary, marginTop: 30, marginHorizontal: 40}}>Resend Otp?</HeaderText>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
                     <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => navigation.replace("Main")}/>
-                    <TouchableOpacity activeOpacity={0.9}>
-                        <BodyText style={{fontSize: 14}}>By Logging into your account you agree with our <BodyText style={{color: colors.primary}}>Terms&Conditions</BodyText> and <BodyText style={{color: colors.primary}}>Privacy Policy</BodyText></BodyText>
-                    </TouchableOpacity>
                 </View>
             </View>
     )
 }
 
-export default LoginTab
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setSignedIn: () => dispatch(signIn())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(LoginTab)
 
 const styles = StyleSheet.create({
     container: {

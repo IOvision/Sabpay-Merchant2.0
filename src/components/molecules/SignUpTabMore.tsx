@@ -55,9 +55,6 @@ const SignUpTabMore: React.FC<Props> = ({navigation, setState}) => {
             </View>
             <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
                 <PurpleRoundBtn text="Next" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => navigation.replace("Main")}/>
-                <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.push("LoginTab")}>
-                    <BodyText>Already Have an Account? <HeaderText style={{color: colors.primary}}>Log-In</HeaderText></BodyText>
-                </TouchableOpacity>
             </View>
         </View>
     )

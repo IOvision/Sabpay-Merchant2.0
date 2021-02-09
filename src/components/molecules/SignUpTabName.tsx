@@ -10,17 +10,12 @@ export interface Props {
     setState: Function
 }
 const SignUpTabPhone: React.FC<Props> = ({navigation, setState}) => {
-    const [phone, setPhone] = useState("")
     const [name, setName] = useState("")
         return (
         <View style={styles.container}>
             <InputText style={{marginTop: 100}} value={name} placeholder="Name" onChangeText={setName} />
-            <InputText value={phone} placeholder="Phone Number" onChangeText={setPhone} preText={"+91"} />
             <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                <PurpleRoundBtn text="Next" style={{paddingHorizontal: 100, marginBottom: 10}} onPress={() => setState("otp")}/>
-                <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.push("LoginTab")}>
-                    <BodyText>Already Have an Account? <HeaderText style={{color: colors.primary}}>Log-In</HeaderText></BodyText>
-                </TouchableOpacity>
+                <PurpleRoundBtn text="Next" style={{paddingHorizontal: 100, marginBottom: 10}} onPress={() => setState("info")}/>
             </View>
         </View>
     )   

@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
-import SignUpTabPhone from '../components/molecules/SignUpTabPhone'
-import SignUpTabOtp from '../components/molecules/SignUpTabOtp'
+import SignUpTabName from '../components/molecules/SignUpTabName'
 import SignUpTabInfo from '../components/molecules/SignUpTabInfo'
 import SignUpTabPic from '../components/molecules/SignUpTabPic'
 import SignUpTabMore from '../components/molecules/SignUpTabMore'
@@ -12,12 +11,7 @@ const SignUpTab: React.FC<Props> = ({navigation}) => {
     const [state, setState] = useState("phone")
     if(state == "phone") {
         return (
-            <SignUpTabPhone navigation={navigation} setState={setState}/>
-        )
-    }
-    if(state == "otp") {
-        return (
-            <SignUpTabOtp navigation={navigation} setState={setState} />
+            <SignUpTabName navigation={navigation} setState={setState}/>
         )
     }
     if(state == "info") {
