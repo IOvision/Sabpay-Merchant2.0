@@ -8,18 +8,23 @@ import { signIn } from '../redux/actions/user'
 import { connect } from 'react-redux';
 import SmsRetriever from 'react-native-sms-retriever'
 import { Auth } from 'aws-amplify'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getUserData} from '../requests'
+import Merchant from '../models/Merchant'
 
 
 export interface Props {
     navigation: any,
-    setSignedIn: () => void
+    setSignedIn: (merchant: Merchant) => void
 }
-const LoginTab: React.FC<Props> = ({navigation}) => {
+const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
     const [phone, setPhone] = useState("")
     const [otp, setOtp] = useState("")
     const [state, setState] = useState("phone")
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
+    const [user, setUser] = useState('null')
+    var temp: any
 
 
     const validateNumber = (number: string) => {
@@ -58,26 +63,35 @@ const LoginTab: React.FC<Props> = ({navigation}) => {
                 })
             }
         } catch (error) {
-            setIsLoading(false)
+            
         }  
     }
 
+    const signIn = async () => {
+        try {
+            temp = await Auth.signIn(`+91${phone}`)
+            setUser(temp)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const confirmSignIn = async (otp: string) => {
-        // try {
-        //     const data = await Auth.sendCustomChallengeAnswer(user, otp);
-        //     getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
-        //         if (err) {
-        //             if(err === 'signup'){
-        //                 navigation.navigate('Signup')
-        //             }
-        //         }
-        //         AsyncStorage.setItem('@User', JSON.stringify(resp))
-        //         setSignedIn(resp)
-        //     })
-        //     close()
-        // } catch (error) {
-        //     console.log('error', error)
-        // }
+        try {
+            const data = await Auth.sendCustomChallengeAnswer(user, otp);
+            getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
+                if (err) {
+                    if(err === 'signup'){
+                        navigation.navigate('SignUpTab')
+                    }
+                }
+                AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
+                setSignedIn(resp)
+                navigation.replace("Main")
+            })
+        } catch (error) {
+            console.log('error', error)
+        }
     }
 
     if(state == "phone") {
@@ -97,7 +111,7 @@ const LoginTab: React.FC<Props> = ({navigation}) => {
                 <InputText value={otp} placeholder="0-9" onChangeText={setOtp} style={{marginHorizontal: 40}}/>
                 <HeaderText style={{color: colors.primary, marginTop: 30, marginHorizontal: 40}}>Resend Otp?</HeaderText>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                    <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => navigation.replace("Main")}/>
+                    <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => confirmSignIn(otp)}/>
                 </View>
             </View>
     )
@@ -105,7 +119,7 @@ const LoginTab: React.FC<Props> = ({navigation}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setSignedIn: () => dispatch(signIn())
+        setSignedIn: (merchant: Merchant) => dispatch(signIn(merchant))
     }
 }
 

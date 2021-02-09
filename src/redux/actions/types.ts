@@ -3,7 +3,8 @@ import MerchantDetails from '../../models/MerchantDetails'
 
 //USER
 export interface UserState {
-    signedIn: boolean
+    signedIn: boolean,
+    merchant: Merchant
 }
 
 export const SET_SIGNED_IN = "SET_SIGNED_IN"
@@ -11,6 +12,7 @@ export const SET_SIGNED_OUT = "SET_SIGNED_OUT"
 
 interface SignInAction {
     type: typeof SET_SIGNED_IN,
+    merchant: Merchant
 }
 
 interface SignOutAction {
