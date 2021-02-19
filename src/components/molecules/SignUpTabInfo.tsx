@@ -6,17 +6,17 @@ import colors from '../../assets/colors'
 import PurpleRoundBtn from '../atoms/PurpleRoundBtn'
 
 export interface Props {
-    navigation: any, setState: Function
+    navigation: any, setState: Function,
+    businessName: string, setBusinessName: Function,
+    locality: string, setLocality: Function,
+    town: string, setTown: Function, 
+    city: string, setCity: Function,
+    landmark: string, setLandmark: Function,
+    gst: string, setGst: Function, 
+    pan: string, setPan: Function
 }
-const SignUpTabInfo: React.FC<Props> = ({navigation, setState}) => {
+const SignUpTabInfo: React.FC<Props> = ({navigation, setState, businessName, setBusinessName, locality, setLocality, town, setTown, city, setCity, landmark, setLandmark, gst, setGst, pan, setPan}) => {
     const [present, setPresent] = useState("basic")
-    const [businessName, setBusinessName] = useState("")
-    const [locality, setLocality] = useState("")
-    const [town, setTown] = useState("")
-    const [city, setCity] = useState("")
-    const [landmark, setLandmark] = useState("")
-    const [gst, setGst] = useState("")
-    const [pan, setPan] = useState("")
     if(present == "basic") {
         return (
             <View style={styles.container}>

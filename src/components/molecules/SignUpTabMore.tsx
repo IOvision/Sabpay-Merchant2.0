@@ -8,14 +8,14 @@ import InfoBox from '../atoms/InfoBox'
 
 
 export interface Props {
-    navigation: any, setState: Function
+    navigation: any, setState: Function,
+    sabpay: Boolean, setSabpay: Function, 
+    self: Boolean, setSelf: Function, 
+    kirana: Boolean, setKirana: Function, 
+    grocery: Boolean, setGrocery: Function
 }
 
-const SignUpTabMore: React.FC<Props> = ({navigation, setState}) => {
-    const [sabpay, setSabpay] = React.useState(true);
-    const [self, setSelf] = React.useState(true);
-    const [kirana, setKirana] = React.useState(true);
-    const [grocery, setGrocery] = React.useState(true);
+const SignUpTabMore: React.FC<Props> = ({navigation, setState, sabpay, setSabpay, self, setSelf, kirana, setKirana, grocery, setGrocery}) => {
     return (
         <View style={styles.container}>
             <HeaderText style={{marginTop: 70}}>Business Details</HeaderText>

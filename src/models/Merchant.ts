@@ -50,6 +50,10 @@ export default class Merchant {
         return list
     }
     
+    public getPhone(): string {
+        return this.phone.substr(3)
+    }
+
     public toJson() {
         return JSON.stringify(this)
     }

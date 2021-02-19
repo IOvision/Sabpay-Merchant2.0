@@ -83,6 +83,7 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
                 if (err) {
                     if(err === 'signup'){
                         navigation.navigate('SignUpTab')
+                        return
                     }
                 }
                 AsyncStorage.setItem('@Merchant', JSON.stringify(resp))

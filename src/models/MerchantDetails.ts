@@ -15,6 +15,19 @@ export default class MerchantDetails {
     }[];
     dealsOfTheDay: Item[]
 
+    /*
+    shopName: string;
+    businessName: string;
+    address: string
+    deliveryOpted: string,
+    shopCategory: string;
+    image: string;
+    */
+
+    /*
+        shopName, businessName, address, deliveryOpted, shopCategory, image 
+    */
+
     constructor(a: any) {
         this.SK = a.SK
         this.tags = a.tags
