@@ -1,18 +1,25 @@
-import { SET_MERCHANT, MerchantActionTypes, MerchantState } from '../actions/types'
+import { SET_SIGNED_IN, SET_SIGNED_OUT, MerchantActionTypes, MerchantState } from '../actions/types'
 
 const initialState: MerchantState = {
-    merchant: null
+    merchant: undefined,
+    signedIn: false
 }
 
-const merchantReducer = (state = initialState, action: MerchantActionTypes) => {
+const userReducer = (state = initialState, action: MerchantActionTypes) => {
     switch(action.type) {
-        case SET_MERCHANT:
+        case SET_SIGNED_IN:
             return {
-                merchant: action.data
-            }
+                signedIn: true,
+                merchant: action.merchant
+            };
+        case SET_SIGNED_OUT:
+            return {
+                ...state,
+                signedIn: false
+            };
         default:
             return state;
     }
 }
 
-export default merchantReducer;
+export default userReducer;

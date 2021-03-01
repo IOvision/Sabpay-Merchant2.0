@@ -8,14 +8,14 @@ import InfoBox from '../atoms/InfoBox'
 
 
 export interface Props {
-    navigation: any, setState: Function,
     sabpay: Boolean, setSabpay: Function, 
     self: Boolean, setSelf: Function, 
     kirana: Boolean, setKirana: Function, 
-    grocery: Boolean, setGrocery: Function
+    grocery: Boolean, setGrocery: Function,
+    updateBackend: () => void
 }
 
-const SignUpTabMore: React.FC<Props> = ({navigation, setState, sabpay, setSabpay, self, setSelf, kirana, setKirana, grocery, setGrocery}) => {
+const SignUpTabMore: React.FC<Props> = ({sabpay, setSabpay, self, setSelf, kirana, setKirana, grocery, setGrocery, updateBackend}) => {
     return (
         <View style={styles.container}>
             <HeaderText style={{marginTop: 70}}>Business Details</HeaderText>
@@ -54,7 +54,7 @@ const SignUpTabMore: React.FC<Props> = ({navigation, setState, sabpay, setSabpay
                 </InfoBox>
             </View>
             <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                <PurpleRoundBtn text="Next" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => navigation.replace("Main")}/>
+                <PurpleRoundBtn text="Next" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => updateBackend()}/>
             </View>
         </View>
     )

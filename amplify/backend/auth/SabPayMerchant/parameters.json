@@ -1,10 +1,12 @@
 {
-    "resourceNameTruncated": "sabpay5819dcc3",
-    "userPoolName": "SabpayAmplifyUserPool",
+    "identityPoolName": "SabPayMerchant",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "sabpayd4f4e115",
+    "userPoolName": "SabPayMerchant",
     "autoVerifiedAttributes": [
         "phone_number"
     ],
-    "mfaConfiguration": "ON",
+    "mfaConfiguration": "OFF",
     "mfaTypes": [
         "SMS Text Message"
     ],
@@ -12,7 +14,7 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
@@ -26,11 +28,11 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "Sabpay5819dcc3_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "SabPayd4f4e115_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "5819dcc3",
-    "resourceName": "SabpayAmplify",
-    "authSelections": "userPoolOnly",
+    "sharedId": "d4f4e115",
+    "resourceName": "SabPayMerchant",
+    "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -44,16 +46,16 @@
         ]
     },
     "useDefault": "manual",
+    "thirdPartyAuth": false,
     "usernameAttributes": [
-        "phone_number"
+        "email, phone_number"
     ],
     "userPoolGroups": true,
     "adminQueries": false,
     "triggers": "{}",
     "hostedUI": false,
     "userPoolGroupList": [
-        "users",
-        "merchant"
+        "Merchant"
     ],
     "serviceName": "Cognito",
     "parentStack": {

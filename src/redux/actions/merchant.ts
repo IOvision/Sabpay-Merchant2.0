@@ -1,17 +1,15 @@
 import Merchant from '../../models/Merchant';
-import MerchantDetails from '../../models/MerchantDetails';
-import { SET_MERCHANT, MerchantActionTypes, SET_MERCHANT_DETAILS } from './types'
+import { SET_SIGNED_IN, SET_SIGNED_OUT, MerchantActionTypes } from './types'
 
-export const setMerchant = (merchant: Merchant): MerchantActionTypes => {
-    return {
-        type: SET_MERCHANT,
-        data: merchant
-    }
-};
-
-export const setMerchantDeatils = (merchant: MerchantDetails): MerchantActionTypes => (
+export const signIn = (merchant: Merchant): MerchantActionTypes => (
     {
-        type: SET_MERCHANT_DETAILS,
-        data: merchant
+        type: SET_SIGNED_IN,
+        merchant: merchant
+    }
+);
+
+export const signOut = (): MerchantActionTypes => (
+    {
+        type: SET_SIGNED_OUT
     }
 );

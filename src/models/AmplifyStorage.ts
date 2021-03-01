@@ -9,7 +9,6 @@ export default class AmplifyStorage {
     static syncPromise: Promise<unknown>
 
     static setItem(key: string, value: string) {
-        console.log('set', key)
         AsyncStorage.setItem(STORAGE_KEY_PREFIX + key, value)
         dataMemory[key] = value
         return dataMemory[key]

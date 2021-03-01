@@ -14,12 +14,18 @@ import ChooseCategory from '../screens/ChooseCategory'
 import ChooseTag from '../screens/ChooseTag'
 import SignUpTab from '../screens/SignUpTab'
 import LoginTab from '../screens/LoginTab'
+import { RootState } from '../redux/store'
+import { connect } from 'react-redux'
 
-const MainStack: React.FC = () => {
+export interface Props {
+  isSignedIn: boolean
+}
+
+const MainStack: React.FC<Props> = ({isSignedIn}) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"LoginTab"}
+        initialRouteName={ isSignedIn ? "Main" : "LoginTab" }
         screenOptions={{
           header: ({ scene, previous, navigation}) => {
               return (
@@ -98,4 +104,10 @@ const MainStack: React.FC = () => {
   )
 }
 
-export default MainStack
+const mapStateToProps = (state: RootState) => {
+  return {
+    isSignedIn: state.merchantReducer.signedIn
+  }
+}
+
+export default connect(mapStateToProps)(MainStack)

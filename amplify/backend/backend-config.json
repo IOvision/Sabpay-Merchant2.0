@@ -6,16 +6,17 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "SabpayAmplify",
+          "resourceName": "SabPayMerchant",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
-            "AppClientID"
+            "AppClientID",
+            "IdentityPoolId"
           ]
         }
       ]
     },
-    "SabpayAmplify": {
+    "SabPayMerchant": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

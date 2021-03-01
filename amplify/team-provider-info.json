@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-sabpay20-dev-121541-authRole",
-      "UnauthRoleArn": "arn:aws:iam::843829705417:role/amplify-sabpay20-dev-121541-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::843829705417:role/amplify-sabpay20-dev-121541-authRole",
+      "AuthRoleName": "amplify-sabpaymerchant-dev-215325-authRole",
+      "UnauthRoleArn": "arn:aws:iam::843829705417:role/amplify-sabpaymerchant-dev-215325-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::843829705417:role/amplify-sabpaymerchant-dev-215325-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-sabpay20-dev-121541-deployment",
-      "UnauthRoleName": "amplify-sabpay20-dev-121541-unauthRole",
-      "StackName": "amplify-sabpay20-dev-121541",
-      "StackId": "arn:aws:cloudformation:ap-south-1:843829705417:stack/amplify-sabpay20-dev-121541/83977d00-2d57-11eb-a4cc-06bc2464b5ba",
-      "AmplifyAppId": "d3g9hec4wstnvn"
+      "DeploymentBucketName": "amplify-sabpaymerchant-dev-215325-deployment",
+      "UnauthRoleName": "amplify-sabpaymerchant-dev-215325-unauthRole",
+      "StackName": "amplify-sabpaymerchant-dev-215325",
+      "StackId": "arn:aws:cloudformation:ap-south-1:843829705417:stack/amplify-sabpaymerchant-dev-215325/cd1f6bb0-72ce-11eb-987a-0696e01d0e2e",
+      "AmplifyAppId": "d3a11dm5ho924j"
     },
     "categories": {
       "auth": {
-        "SabpayAmplify": {}
+        "SabPayMerchant": {}
       }
     }
   }

@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
-import { View,StyleSheet, TouchableOpacity, Touchable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import InputText from '../components/atoms/InputText'
-import {BodyText, HeaderText} from '../components/atoms/Text'
+import { BodyText, HeaderText } from '../components/atoms/Text'
 import colors from '../assets/colors'
 import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
-import { signIn } from '../redux/actions/user'
+import { signIn } from '../redux/actions/merchant'
 import { connect } from 'react-redux';
 import SmsRetriever from 'react-native-sms-retriever'
 import { Auth } from 'aws-amplify'
@@ -39,7 +39,6 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
                     password: Date.now().toString()
                 })
                 startSmsListener()
-                console.log(user)
             } catch (error) {
                 if (error.code === "UsernameExistsException")
                 startSmsListener()
@@ -79,10 +78,11 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
     const confirmSignIn = async (otp: string) => {
         try {
             const data = await Auth.sendCustomChallengeAnswer(user, otp);
+            console.log(data.signInUserSession.idToken.jwtToken)
             getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
                 if (err) {
                     if(err === 'signup'){
-                        navigation.navigate('SignUpTab')
+                        navigation.navigate('SignUpTab', { phone: phone })
                         return
                     }
                 }
@@ -112,7 +112,10 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
                 <InputText value={otp} placeholder="0-9" onChangeText={setOtp} style={{marginHorizontal: 40}}/>
                 <HeaderText style={{color: colors.primary, marginTop: 30, marginHorizontal: 40}}>Resend Otp?</HeaderText>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                    <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => confirmSignIn(otp)}/>
+                    <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => {
+                        SmsRetriever.removeSmsListener()
+                        confirmSignIn(otp)
+                    }}/>
                 </View>
             </View>
     )

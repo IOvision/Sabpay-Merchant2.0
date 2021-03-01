@@ -1,8 +1,9 @@
 import Merchant from "../../models/Merchant"
-import MerchantDetails from '../../models/MerchantDetails'
+import InventoryMetadata from '../../models/InventoryMetadata'
+import Inventory from "../../models/Inventory"
 
 //USER
-export interface UserState {
+export interface MerchantState {
     signedIn: boolean,
     merchant: Merchant
 }
@@ -19,24 +20,24 @@ interface SignOutAction {
     type: typeof SET_SIGNED_OUT
 }
 
-export type UserActionTypes = SignInAction | SignOutAction
+export type MerchantActionTypes = SignInAction | SignOutAction
 
 //MERCHANT
-export interface MerchantState {
-    merchant: Merchant
+export interface InventoryState {
+    inventory: Inventory
 }
 
-export const SET_MERCHANT = 'SET_MERCHANT'
-export const SET_MERCHANT_DETAILS = 'SET_MERCHANT_DETAILS'
+export const SET_INVENTORY = 'SET_INVENTORY'
+export const SET_INVENTORY_METADATA = 'SET_INVENTORY_METADATA'
 
-interface SetMerchantAction {
-    type: typeof SET_MERCHANT,
-    data: Merchant
+interface SetInventoryAction {
+    type: typeof SET_INVENTORY,
+    data: Inventory
 }
 
-interface SetMerchantDetailsActions {
-    type: typeof SET_MERCHANT_DETAILS,
-    data: MerchantDetails
+interface SetInventoryMetadataAction {
+    type: typeof SET_INVENTORY_METADATA,
+    data: InventoryMetadata
 }
 
-export type MerchantActionTypes = SetMerchantAction | SetMerchantDetailsActions
+export type InventoryActionTypes = SetInventoryAction | SetInventoryMetadataAction
