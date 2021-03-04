@@ -10,7 +10,7 @@ export const setInventory = (inventory: Inventory): InventoryActionTypes => {
     }
 };
 
-export const setInventoryDetails = (inventoryMetadata: InventoryMetadata): InventoryActionTypes => (
+export const setInventoryMetadata = (inventoryMetadata: InventoryMetadata): InventoryActionTypes => (
     {
         type: SET_INVENTORY_METADATA,
         data: inventoryMetadata

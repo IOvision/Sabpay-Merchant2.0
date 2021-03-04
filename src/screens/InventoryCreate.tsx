@@ -1,23 +1,22 @@
 import React, {useState} from 'react'
-import SignUpTabName from '../components/molecules/SignUpTabName'
-import SignUpTabInfo from '../components/molecules/SignUpTabInfo'
-import SignUpTabMore from '../components/molecules/SignUpTabMore'
+import InventoryCreateInfo from '../components/molecules/InventoryCreateInfo'
+import InventoryCreateMore from '../components/molecules/InventoryCreateMore'
 import { connect } from 'react-redux'
 import { RootState } from '../redux/store'
 import Merchant from '../models/Merchant'
 import { setInventory } from '../redux/actions/inventory';
 import { createInventory, putUserData } from '../requests'
 import { signIn } from '../redux/actions/merchant'
-import Inventory from '../models/Inventory'
+import Inventory, { NewInventoryData } from '../models/Inventory'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export interface Props {
     navigation: any,
     merchant: Merchant,
     signIn: (merchant: Merchant) => void
 }
-const SignUpTab: React.FC<Props> = ({navigation, route}) => {
-    const [state, setState] = useState("phone")
-    const [name, setName] = useState("")
+const InventoryCreate: React.FC<Props> = ({navigation, merchant, signIn}) => {
+    const [state, setState] = useState("info")
     const [latitude, setLatitude] = useState(0)
     const [longitude, setLongitude] = useState(0)
     const [businessName, setBusinessName] = useState("Rakshit ki Dukaan")
@@ -33,37 +32,38 @@ const SignUpTab: React.FC<Props> = ({navigation, route}) => {
     const [grocery, setGrocery] = React.useState(true);
     
     const updateBackend = () => {
-        var a = {
-            name: name,
-            phone: route.params.phone
+        const inven: NewInventoryData = {
+            shopName: businessName,
+            address: {
+                locality,
+                town,
+                city,
+                landmark
+            },
+            phone: merchant.phone,
+            deliveryOpted: true,
+            latitude: "25.599778",
+            longitude: "85.134688"
         }
-        console.log(a)
-        putUserData(a, (err, resp) => {
-            if (err)
-            return console.log("Error aa gyi")
-            const temp = {
-                shopname: businessName,
-                address: `${locality}, ${town}, ${city}`,
-                latitude: "25.599778",
-                longitude: "85.134688"
-            }
-            const inv = new Inventory(temp)
-            createInventory(inv, a.phone, (err, resp) => {
-                if (err)
-                return console.log(err)
+        createInventory(new Inventory(inven), merchant.phone, (err, resp) => {
+            if (err) return console.log("Error", err)
+            console.log("done")
+            var merch = merchant
+            merch.invId = resp
+            AsyncStorage.setItem("@Merchant", JSON.stringify(merch))
+            .then(data => {
+                signIn(merch)
+                navigation.pop()
+            })
+            .catch(err => {
+                console.log(err)
             })
         })
     }
         
-
-    if(state == "phone") {
-        return (
-            <SignUpTabName navigation={navigation} setState={setState} name={name} setName={setName} setLatitude={setLatitude} setLongitude={setLongitude}/>
-        )
-    }
     if(state == "info") {
         return (
-            <SignUpTabInfo navigation={navigation} setState={setState} businessName={businessName} setBusinessName={setBusinessName}
+            <InventoryCreateInfo navigation={navigation} setState={setState} businessName={businessName} setBusinessName={setBusinessName}
             locality={locality} setLocality={setLocality}
             town={town} setTown={setTown}
             city={city} setCity={setCity}
@@ -74,7 +74,7 @@ const SignUpTab: React.FC<Props> = ({navigation, route}) => {
     }
     if(state == "more") {
         return (
-            <SignUpTabMore updateBackend={updateBackend} sabpay={sabpay} setSabpay={setSabpay} 
+            <InventoryCreateMore updateBackend={updateBackend} sabpay={sabpay} setSabpay={setSabpay} 
             self={self} setSelf={setSelf}
             kirana={kirana} setKirana={setKirana}
             grocery={grocery} setGrocery={setGrocery} />
@@ -93,4 +93,4 @@ const mapDispatchToProps = (dispatch) => {
         signIn: (merchant: Merchant) => dispatch(signIn(merchant)),
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpTab)
+export default connect(mapStateToProps, mapDispatchToProps)(InventoryCreate)

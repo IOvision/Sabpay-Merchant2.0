@@ -15,7 +15,7 @@ export interface Props {
     updateBackend: () => void
 }
 
-const SignUpTabMore: React.FC<Props> = ({sabpay, setSabpay, self, setSelf, kirana, setKirana, grocery, setGrocery, updateBackend}) => {
+const InventoryCreateMore: React.FC<Props> = ({sabpay, setSabpay, self, setSelf, kirana, setKirana, grocery, setGrocery, updateBackend}) => {
     return (
         <View style={styles.container}>
             <HeaderText style={{marginTop: 70}}>Business Details</HeaderText>
@@ -60,7 +60,7 @@ const SignUpTabMore: React.FC<Props> = ({sabpay, setSabpay, self, setSelf, kiran
     )
 }
 
-export default SignUpTabMore
+export default InventoryCreateMore
 
 const styles = StyleSheet.create({
     container: {

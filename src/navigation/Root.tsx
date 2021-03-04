@@ -11,8 +11,8 @@ import RootDrawer from './RootDrawer'
 import OrderDetailTab from '../screens/OrderDetailTab'
 import ItemDetailScreen from '../screens/ItemDetailScreen'
 import ChooseCategory from '../screens/ChooseCategory'
+import InventoryCreate from '../screens/InventoryCreate'
 import ChooseTag from '../screens/ChooseTag'
-import SignUpTab from '../screens/SignUpTab'
 import LoginTab from '../screens/LoginTab'
 import { RootState } from '../redux/store'
 import { connect } from 'react-redux'
@@ -46,8 +46,8 @@ const MainStack: React.FC<Props> = ({isSignedIn}) => {
           }}
         />
         <Stack.Screen
-          name="SignUpTab"
-          component={SignUpTab}
+          name="InventoryCreate"
+          component={InventoryCreate}
           options={{
             header: ({ scene, previous, navigation}) => {
               return (

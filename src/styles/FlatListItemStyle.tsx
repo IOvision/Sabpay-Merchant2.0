@@ -36,7 +36,8 @@ interface StyleCategoryPageCategoryItem {
   container: ViewStyle,
   image: ViewStyle,
   text: TextStyle,
-  textContainer: ViewStyle
+  textContainer: ViewStyle,
+  touchable: ViewStyle
 }
 
 export const CategoryPageCategoryItemStyles = StyleSheet.create<StyleCategoryPageCategoryItem>({
@@ -45,9 +46,15 @@ export const CategoryPageCategoryItemStyles = StyleSheet.create<StyleCategoryPag
       borderTopRightRadius: 22,
       width: '100%',
       height: 200,
-      marginBottom: 40,
       borderWidth: 1,
-      borderColor: colors.mediumGrey
+      borderColor: colors.mediumGrey,
+      justifyContent: 'flex-end'
+    },
+    touchable: {
+      width: '100%',
+      borderWidth: 1,
+      borderColor: colors.mediumGrey,
+      justifyContent: 'flex-end'
     },
     image: {
       width: `100%`,
@@ -66,7 +73,6 @@ export const CategoryPageCategoryItemStyles = StyleSheet.create<StyleCategoryPag
       backgroundColor: colors.white,
       position: 'absolute',
       padding: 13,
-      bottom: -20,
       width: '100%',
       borderRadius: 15,
       borderWidth: 1,

@@ -1,25 +1,33 @@
 import Item from './Item'
 
 export interface NewInventoryData {
-    shopname: string,
-    address: string,
+    shopName: string,
+    address: InventoryAddress,
     phone: string,
-    deliveryOpted: boolean
+    deliveryOpted: boolean,
+    latitude: string,
+    longitude: string,
+}
+
+export interface InventoryAddress {
+    locality: string,
+    town: string,
+    city: string,
+    landmark: string
 }
 
 export default class Inventory {
     
     PK: string;
     SK: string;
-    shopname: string;
-    address: string;
+    shopName: string;
+    address: InventoryAddress;
     phone: string;
     image: string;
     rating: number;
     tags: {
-        title: string,
-        tag: string[]
-    }[]
+        [key: string]: string[]
+    };
     isOpen: boolean;
     exclude: {
         tag: string,
@@ -31,10 +39,9 @@ export default class Inventory {
     longitude: number;
 
     constructor(a?: any) {
-        console.log('debug', a.offers)
         this.PK = a && a.PK || undefined
         this.SK = a && a.SK || undefined
-        this.shopname = a && a.shopname || undefined
+        this.shopName = a && a.shopName || undefined
         this.address = a && a.address || undefined
         this.image = a && a.image || "NaN"
         this.rating = a && a.rating || 0

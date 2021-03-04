@@ -9,7 +9,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { signIn } from './src/redux/actions/merchant'
-import { setInventory } from './src/redux/actions/inventory'
+import { setInventory, setInventoryMetadata } from './src/redux/actions/inventory'
+import InventoryMetadata from './src/models/InventoryMetadata'
+import { getInventoryMetadata, getInventory } from './src/requests'
 
 Amplify.configure(awsConfig)
 Auth.configure({
@@ -18,7 +20,8 @@ Auth.configure({
 
 export interface Props {
   setSignedIn: (merchant: Merchant) => void,
-  setInventory: (inventory: Inventory) => void
+  setInventory: (inventory: Inventory) => void,
+  setInventoryMetadata: (invMetadata: InventoryMetadata) => void
 }
 
 export interface State  {
@@ -36,23 +39,32 @@ class App extends React.Component<Props, State> {
     }
   }
   
-  getMerchantData = () => new Promise((resolve, reject) => {
+  getMerchantData = () => new Promise<Merchant>((resolve, reject) => {
     AsyncStorage.getItem('@Merchant')
     .then(data => {
       console.log(data)
-      if (data) this.props.setSignedIn(Merchant.fromString(data))
-      resolve(true)
+      const merchant = Merchant.fromString(data)
+      if (data) this.props.setSignedIn(merchant)
+      resolve(merchant)
     })
     .catch(err => reject(err))
   })
+  
 
   componentDidMount() {
     Promise.all([this.getMerchantData()])
     .then(data => {
-      this.setState({
-        isLoading: false
+      Promise.all([getInventoryMetadata(data[0].invId), getInventory(data[0].invId.split("+")[1])])
+      .then(merchant => {
+        this.props.setInventoryMetadata(merchant[0])
+        this.props.setInventory(merchant[1])
+        this.setState({
+          ...this.state,
+          isLoading: false
+        })
       })
-    })
+      .catch(err => console.log(err))
+      })
     .catch(err => console.log(err))
   }
 
@@ -73,7 +85,8 @@ class App extends React.Component<Props, State> {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSignedIn: (merchant: Merchant) => dispatch(signIn(merchant)),
-    setInventory: (inventory: Inventory) => dispatch(setInventory(inventory))
+    setInventory: (inventory: Inventory) => dispatch(setInventory(inventory)),
+    setInventoryMetadata: (invMeta: InventoryMetadata) => (dispatch(setInventoryMetadata(invMeta)))
   }
 }
 

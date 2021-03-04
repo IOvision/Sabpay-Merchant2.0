@@ -6,6 +6,8 @@ axios.defaults.headers = { "x-api-key": 'RDFCXXNZwW2FBxGykBgKz3E0MPcz3A5I4yFqzml
 import Merchant from './models/Merchant'
 import Inventory from './models/Inventory'
 import Order from './models/Order'
+import InventoryMetadata from './models/InventoryMetadata'
+import { CheckBox } from 'react-native'
 
 export const getUserData = (phone: string, token: string, cb: (err: any, resp: Merchant) => void) => {
     axios.get(`/merchant/${phone}`, {
@@ -48,26 +50,28 @@ export const putUserData = (a: {name: string, phone: string}, cb: (err: any, res
 }
 
 //provision + metadata creation + inventoryCreation
-export const createInventory = (a: Inventory, phone: string, cb: (err: any, resp: Inventory) => void) => {
+export const createInventory = (a: Inventory, phone: string, cb: (err: any, resp: string) => void) => {
     Auth.currentSession()
     .then(data => {
         const token = data.getIdToken().getJwtToken()
-        axios.post('/inventory/', a.toJson(), {
+        axios.post('/inventory/', a, {
             params: {
-                phone
+                phone: phone
             },
             headers: {
                 "SP-TOKEN": token
             }
         })
         .then(res => {
-            console.log(res.data.data)
-            cb(false, res.data.data[0])
+            cb(false, res.data.data[0].invId)
         })
         .catch(err => {
             console.log(err)
-            cb(true, null)
+            cb(err, null)
         })
+    })
+    .catch(err => {
+        console.log(err)
     })
 }
 
@@ -93,7 +97,25 @@ export const getOrders = (invId: string, lastKey: string | null, cb: (err: any, 
     })
 }
 
-export const getInventory = (invId: string, cb: (err: any, resp: Inventory) => void) => {
+export const getInventoryMetadata = (invAcc: string) => new Promise<InventoryMetadata>((resolve, reject) => {
+    Auth.currentSession()
+    .then(data => {
+        const token = data.getIdToken().getJwtToken()
+        axios.get(`/inventory/${invAcc}`, {
+            headers: {
+                "SP-TOKEN": token
+            }
+        })
+        .then(res => {
+            resolve(res.data.data[0])
+        })
+        .catch(err => {
+            reject(err)
+        })
+    })
+})
+
+export const getInventory = (invId: string) => new Promise<Inventory>((resolve, reject) => {
     Auth.currentSession()
     .then(data => {
         const token = data.getIdToken().getJwtToken()
@@ -103,12 +125,43 @@ export const getInventory = (invId: string, cb: (err: any, resp: Inventory) => v
             }
         })
         .then(res => {
-            console.log(res.data.data)
-            cb(false, res.data.data)
+            resolve(res.data.data[0])
         })
         .catch(err => {
-            console.log(err)
-            cb(true, null)
+            reject(err)
         })
     })
-}
+})
+
+export const getCategories = (cat?: string) => new Promise<CategoryData[]>((resolve, reject) => {
+    Auth.currentSession()
+    .then(data => {
+        const token = data.getIdToken().getJwtToken()
+        axios.get(`/admin/category`, {
+            params: {
+                category: cat
+            }
+        })
+        .then(res => resolve(res.data.data))
+        .catch(err => reject(err))
+    })
+})
+
+export const updateTags = (inv: Inventory, invId: string, category: string, array: string[]) => new Promise((resolve, reject) => {
+    inv.tags[category] = array
+    Auth.currentSession()
+    .then(data => {
+        const token = data.getIdToken().getJwtToken()
+        axios.put(`inventory/${invId}`, {
+            UpdateExpression: "set tags = :n",
+            ExpressionAttributeValues: {
+                ":n": inv.tags
+            }
+        })
+        .then(res => {
+            console.log(res)
+            resolve(true)
+        })
+        .catch(err => reject(err))
+    })
+})

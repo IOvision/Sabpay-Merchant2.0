@@ -1,21 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, FlatList } from 'react-native'
+import { connect } from 'react-redux'
+import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
 import ChooseTagFlatList from '../components/molecules/ChooseTagFlatList'
+import Inventory from '../models/Inventory'
+import Merchant from '../models/Merchant'
+import { RootState } from '../redux/store'
+import { updateTags } from '../requests'
 
-export default function ChooseTag({navigation}) {
-    const data = [
-        {
-            image: "data:image/jpeg;base64,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",
-            title: "Milk and Milk products"
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9D2hl5W12rOkB72fxET8orOOMNrFTWmVemw&usqp=CAU",
-            title: "Cheese Products"
-        }
-    ]
+export interface Props {
+    navigation: any,
+    route: any,
+    inventory: Inventory,
+    merchant: Merchant
+}
+
+const ChooseTag: React.FC<Props> = ({navigation, route, inventory, merchant}) => {
+    const [data, setData] = useState<{
+        title: string,
+        tags: string[]
+    }>(route.params.data)
+    const [tagList, setTagList] = useState<string[]>(data.title in inventory.tags ? inventory.tags[data.title] : [])
+    console.log(tagList)
+    const handleChange = () => {
+        updateTags(inventory, merchant.invId.split("+")[1], data.title, tagList)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
     return (
-        <View style={{display: "flex", flex: 1, backgroundColor: "white", paddingHorizontal: 30}}>
-            <ChooseTagFlatList data={data} navigation={navigation} style={{}}/>
+        <View style={{display: "flex", flex: 1, backgroundColor: "white", justifyContent: "space-between"}}>
+            <ChooseTagFlatList tagList={tagList} setTagList={setTagList} data={data} navigation={navigation} style={{padding: 10}}/>
+            <PurpleRoundBtn style={{width: '100%', borderRadius: 4, padding: 15, alignItems: 'center'}} text="Apply Changes" onPress={handleChange}/>
         </View>
     )
 }
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        inventory: state.inventoryReducer.inventory,
+        merchant: state.merchantReducer.merchant
+    }
+}
+
+export default connect(mapStateToProps)(ChooseTag)

@@ -15,7 +15,7 @@ export interface Props {
     gst: string, setGst: Function, 
     pan: string, setPan: Function
 }
-const SignUpTabInfo: React.FC<Props> = ({navigation, setState, businessName, setBusinessName, locality, setLocality, town, setTown, city, setCity, landmark, setLandmark, gst, setGst, pan, setPan}) => {
+const InventoryCreateInfo: React.FC<Props> = ({navigation, setState, businessName, setBusinessName, locality, setLocality, town, setTown, city, setCity, landmark, setLandmark, gst, setGst, pan, setPan}) => {
     const [present, setPresent] = useState("basic")
     if(present == "basic") {
         return (
@@ -44,7 +44,7 @@ const SignUpTabInfo: React.FC<Props> = ({navigation, setState, businessName, set
     )
 }
 
-export default SignUpTabInfo
+export default InventoryCreateInfo
 
 const styles = StyleSheet.create({
     container: {
