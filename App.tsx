@@ -12,6 +12,8 @@ import { signIn } from './src/redux/actions/merchant'
 import { setInventory, setInventoryMetadata } from './src/redux/actions/inventory'
 import InventoryMetadata from './src/models/InventoryMetadata'
 import { getInventoryMetadata, getInventory } from './src/requests'
+import { RootState } from './src/redux/store'
+import { CaptionText } from './src/components/atoms/Text'
 
 Amplify.configure(awsConfig)
 Auth.configure({
@@ -21,7 +23,8 @@ Auth.configure({
 export interface Props {
   setSignedIn: (merchant: Merchant) => void,
   setInventory: (inventory: Inventory) => void,
-  setInventoryMetadata: (invMetadata: InventoryMetadata) => void
+  setInventoryMetadata: (invMetadata: InventoryMetadata) => void,
+  isSignedIn: boolean
 }
 
 export interface State  {
@@ -42,10 +45,12 @@ class App extends React.Component<Props, State> {
   getMerchantData = () => new Promise<Merchant>((resolve, reject) => {
     AsyncStorage.getItem('@Merchant')
     .then(data => {
-      console.log(data)
-      const merchant = Merchant.fromString(data)
-      if (data) this.props.setSignedIn(merchant)
-      resolve(merchant)
+      if (data) {
+        const merchant = Merchant.fromString(data)
+        this.props.setSignedIn(merchant)
+        resolve(merchant)
+      }
+      resolve(undefined)
     })
     .catch(err => reject(err))
   })
@@ -54,22 +59,29 @@ class App extends React.Component<Props, State> {
   componentDidMount() {
     Promise.all([this.getMerchantData()])
     .then(data => {
-      Promise.all([getInventoryMetadata(data[0].invId), getInventory(data[0].invId.split("+")[1])])
-      .then(merchant => {
-        this.props.setInventoryMetadata(merchant[0])
-        this.props.setInventory(merchant[1])
+      if (this.props.isSignedIn) {
+        Promise.all([getInventoryMetadata(data[0].invId), getInventory(data[0].invId.split("+")[1])])
+        .then(merchant => {
+          this.props.setInventoryMetadata(merchant[0])
+          this.props.setInventory(merchant[1])
+          this.setState({
+            ...this.state,
+            isLoading: false
+          })
+        })
+        .catch(err => console.log(err))
+      } else {
         this.setState({
           ...this.state,
           isLoading: false
         })
-      })
-      .catch(err => console.log(err))
-      })
+      }
+    })
     .catch(err => console.log(err))
   }
 
   render() {
-
+    console.log(this.state.isLoading)
     if (!this.state.isLoading) {
       return (
         <Root />
@@ -77,8 +89,14 @@ class App extends React.Component<Props, State> {
     }
 
     return (
-      <View></View>
+      <View><CaptionText>Hello</CaptionText></View>
     )
+  }
+}
+
+const mapStateToProps = (state: RootState) => {
+  return {
+    isSignedIn: state.merchantReducer.signedIn
   }
 }
 
@@ -90,4 +108,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
