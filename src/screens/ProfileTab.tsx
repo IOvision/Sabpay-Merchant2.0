@@ -23,18 +23,20 @@ export interface Props {
 
 const ProfileTab: React.FC<Props> = ({navigation, merchant, inventory}) => {
   const [lastKey, setLastKey] = useState(null)
-  const [data, setData] = useState<Order[]>([])
+  const [data, setData] = useState<Order[]>(Order.createArray())
   useEffect(() => {
-    if (typeof merchant.invId == "undefined") {
-      navigation.navigate("InventoryCreate")
+    if(merchant) {
+      if (typeof merchant.invId == "undefined") {
+        navigation.navigate("InventoryCreate")
+      }
     }
   }, [merchant])
 
     return (
-        <View style={{backgroundColor: "white", flex: 1}}>
+        <View style={{backgroundColor: colors.primary, flex: 1}}>
             <View style={{display: "flex", flexDirection:"row", justifyContent: "space-between"}}>
-                <CaptionText style={{marginTop: 50, marginLeft: 30}}>Order Status</CaptionText>
-                <CaptionText style={{marginTop: 50, marginRight: 30, color: colors.primary}}>See All</CaptionText>
+                <CaptionText style={{marginTop: 50, marginLeft: 30, color: "white"}}>Order Status</CaptionText>
+                <CaptionText style={{marginTop: 50, marginRight: 30, color: colors.white}}>See All</CaptionText>
             </View>
             <ProfilePageOrdersFlatList navigation={navigation} data={data} setLastKey={setLastKey} />
         </View>

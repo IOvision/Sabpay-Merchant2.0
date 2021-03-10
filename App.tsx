@@ -59,7 +59,7 @@ class App extends React.Component<Props, State> {
   componentDidMount() {
     Promise.all([this.getMerchantData()])
     .then(data => {
-      if (this.props.isSignedIn) {
+      if (data[0]) {
         Promise.all([getInventoryMetadata(data[0].invId), getInventory(data[0].invId.split("+")[1])])
         .then(merchant => {
           this.props.setInventoryMetadata(merchant[0])

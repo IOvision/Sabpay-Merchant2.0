@@ -25,21 +25,21 @@ export default class Order {
 
     constructor() {
         this.items = [];
-        this.total = "";
-        this.discount = "";
+        this.total = "400";
+        this.discount = "10";
         this.user = {
-            name: "",
-            phone: "",
-            address: "",
+            name: "Sakshi",
+            phone: "9650625937",
+            address: "rohini, delhi",
         };
-        this.id = "";
+        this.id = "001";
         this.merchant = {
-            name: "",
-            phone: "",
-            address: ""
+            name: "Manoj",
+            phone: "9868894191",
+            address: "rohini, delhi"
         };
-        this.status = "";
-        this.deliveryType = "";
+        this.status = "ACCEPTED";
+        this.deliveryType = "pick-up";
     }
 
     public fullDetails(obj: any) {
@@ -85,6 +85,15 @@ export default class Order {
             list.push(a)
         });
         return list
+    }
+
+    public static createArray(): Order[] {
+        var list: Order[] = []
+        for (var i = 0; i < 10; i++) {
+            var order = new Order()
+            list.push(order)
+        }
+        return list;
     }
 
 }

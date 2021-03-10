@@ -1,10 +1,21 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, {useState} from 'react'
+import { View, FlatList } from 'react-native'
+import Order from '../models/Order'
+import AllOrdersFlatListItem from '../components/atoms/AllOrdersFlatListItem'
 
-export default function OrderHistoryTab() {
+export interface Props {
+    navigation: any
+}
+
+const OrderHistoryTab: React.FC<Props> = ({navigation}) => {
+    const [orders, setOrders] = useState(Order.createArray)
     return (
-        <View>
-            <Text></Text>
-        </View>
+        <FlatList 
+            data={orders}
+            renderItem={({item, index}) => <AllOrdersFlatListItem navigation={navigation} item={item}/>}
+            keyExtractor={(item, index) => index.toString()}
+        />
     )
 }
+
+export default OrderHistoryTab

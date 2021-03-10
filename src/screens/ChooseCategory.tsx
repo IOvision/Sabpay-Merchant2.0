@@ -12,7 +12,9 @@ const CategoriesTab: React.FC<Props> = ({navigation, merchant}) => {
 
     useEffect(() => {
         getCategories("")
-        .then(res => setTags(res))
+        .then(res => {
+            setTags(res)
+        })
         .catch(err => console.log(err))
     }, [])
 

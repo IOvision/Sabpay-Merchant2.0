@@ -7,14 +7,16 @@ import { BodyText } from '../atoms/Text'
 import colors from '../../assets/colors'
 import Order from '../../models/Order'
 import { getColorAccordingToStatus } from '../../assets/randomColor'
+
+const {height} = Dimensions.get('window')
+
 export interface Props {
     navigation: any, 
     item: Order
 }
 
-const {height} = Dimensions.get('window')
-const ProfilePageOrdersItem: React.FC<Props> = ({navigation, item}) => {
-        return (
+const AllOrdersFlatListItem: React.FC<Props> = ({navigation, item}) => {
+    return (
         <TouchableOpacity onPress={() => navigation.push("OrderDetailTab", {item: item, newOrder: false})} activeOpacity={0.9}>
         <RoundView style={{marginTop: 20, marginLeft: 25, height: height/1.5, padding: 0}}>
             <View style={{height: 20, backgroundColor: getColorAccordingToStatus(item.status), borderTopStartRadius: 10, borderTopEndRadius: 10}} />
@@ -50,5 +52,4 @@ const styles = StyleSheet.create({
     }
 })
 
-
-export default ProfilePageOrdersItem
+export default AllOrdersFlatListItem
