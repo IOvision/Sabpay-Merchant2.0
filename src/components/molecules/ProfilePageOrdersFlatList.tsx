@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import ProfilePageOrdersItem from '../atoms/ProfilePageOrdersItem'
 import Order from '../../models/Order'
 
@@ -11,13 +11,12 @@ export interface Props {
 const ProfilePageOrdersFlatList: React.FC<Props> = ({navigation, data, setLastKey}) => {
     return (
         <FlatList
+            style={{marginHorizontal: 10}}
             data={data}
             horizontal={true}
             renderItem={({item, index}) => <ProfilePageOrdersItem navigation={navigation} item={item}/>}
             keyExtractor={(item, index) => index.toString()}
-            onEndReached={() => {
-                 setLastKey(btoa(JSON.stringify(data[data.length-1].toJSON())))
-            }}
+            ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         />
     )
 }

@@ -14,7 +14,6 @@ import InventoryMetadata from './src/models/InventoryMetadata'
 import { getInventoryMetadata, getInventory } from './src/requests'
 import { RootState } from './src/redux/store'
 import { CaptionText } from './src/components/atoms/Text'
-import { onCreateOrder } from './graphql/subscriptions'
 
 Amplify.configure(awsConfig)
 Auth.configure({
@@ -79,14 +78,6 @@ class App extends React.Component<Props, State> {
       }
     })
     .catch(err => console.log(err))
-    const subscription = API.graphql(
-      graphqlOperation(onCreateOrder)
-    ).subscribe({
-      next: ({provider, value}) => {
-        console.log(value)
-      },
-      error: error => console.log(error)
-    })
   }
 
   render() {

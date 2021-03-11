@@ -16,7 +16,7 @@ const {height} = Dimensions.get('window')
 const ProfilePageOrdersItem: React.FC<Props> = ({navigation, item}) => {
         return (
         <TouchableOpacity onPress={() => navigation.push("OrderDetailTab", {item: item, newOrder: false})} activeOpacity={0.9}>
-        <RoundView style={{marginTop: 20, marginLeft: 25, height: height/1.5, padding: 0}}>
+        <RoundView style={{marginTop: 20, height: height/1.5, padding: 0}}>
             <View style={{height: 20, backgroundColor: getColorAccordingToStatus(item.status), borderTopStartRadius: 10, borderTopEndRadius: 10}} />
             <View style={{padding: 15}}>
                 <View style={styles.row}>

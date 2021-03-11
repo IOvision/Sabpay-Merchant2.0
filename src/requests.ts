@@ -165,3 +165,19 @@ export const updateTags = (inv: Inventory, invId: string, category: string, arra
         .catch(err => reject(err))
     })
 })
+
+export const getActiveOrders = (invId: string) => new Promise<Order[]>((resolve, reject) => {
+    Auth.currentSession()
+    .then(data => {
+        const token = data.getIdToken().getJwtToken()
+        axios.get(`inventory/${invId}/order/active`, {
+            headers: {
+                "SP-TOKEN": token
+            }
+        })
+        .then(res => {
+            resolve(Order.itemsFromList(res.data.data))
+        })
+        .catch(err => reject(err))
+    })
+})

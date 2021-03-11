@@ -49,7 +49,7 @@ export default class Order {
         a.discount = obj.discount;
         a.user = obj.user;
         a.id = obj.SK
-        a.merchant = obj.merchantName
+        a.merchant = obj.merchant
         a.status = obj.status
         return a
     }
