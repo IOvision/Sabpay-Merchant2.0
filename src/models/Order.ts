@@ -25,24 +25,24 @@ export default class Order {
 
     constructor() {
         this.items = [];
-        this.total = "400";
-        this.discount = "10";
+        this.total = "";
+        this.discount = "";
         this.user = {
-            name: "Sakshi",
-            phone: "9650625937",
-            address: "rohini, delhi",
+            name: "",
+            phone: "",
+            address: "",
         };
-        this.id = "001";
+        this.id = "";
         this.merchant = {
-            name: "Manoj",
-            phone: "9868894191",
-            address: "rohini, delhi"
+            name: "",
+            phone: "",
+            address: ""
         };
-        this.status = "ACCEPTED";
-        this.deliveryType = "pick-up";
+        this.status = "";
+        this.deliveryType = "";
     }
 
-    public fullDetails(obj: any) {
+    public static fullDetails(obj: any) {
         var a = new Order()
         a.items = obj.items;
         a.total = obj.total;
@@ -80,8 +80,7 @@ export default class Order {
     public static itemsFromList(json: Object[]) {
         var list: Order[] = []
         json.forEach(element => {
-            var a = new Order();
-            a = a.fullDetails(element);
+            var a = Order.fullDetails(element);
             list.push(a)
         });
         return list

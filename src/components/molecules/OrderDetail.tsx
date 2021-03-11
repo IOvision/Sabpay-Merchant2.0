@@ -1,39 +1,30 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { BodyText } from '../atoms/Text'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { CaptionText, HeaderText } from '../atoms/Text'
 import colors from '../../assets/colors'
-import InfoBox from '../atoms/InfoBox'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Order from '../../models/Order'
-import Item from '../../models/Item'
+import { Divider } from 'react-native-paper'
 
 export interface Props {
     item: Order
 }
 const OrderDetail: React.FC<Props> = ({item}) => {
     return (
-        <View style={{paddingTop: 20, padding: 25, borderTopWidth: 1, borderColor: colors.mediumGrey}}>
-            <View style={styles.row}>
-                <Icon name="account" color={colors.primary} size={24} style={{marginEnd: 10}}/>
-                <BodyText>{item.user.name}</BodyText>
-            </View>
-            <View style={styles.row}>
-                <Icon name="map-marker" color={colors.primary} size={24} style={{marginEnd: 10}}/>
-                <BodyText>{item.user.address}</BodyText>
-            </View>
-            <View style={styles.row}>
-                <Icon name="phone" color={colors.primary} size={24} style={{marginEnd: 10}}/>
-                <BodyText style={{width: 200}}>{item.user.phone}</BodyText>
-            </View>
-            <View style={{...styles.row, justifyContent: "space-between"}}>
-                <View style={styles.row}>
-                    <FontAwesome5 name="rupee-sign" color={colors.primary} size={24} style={{marginEnd: 10}}/>
-                    <BodyText style={{width: 200}}>Rs. {item.total}</BodyText>
+        <View style={{padding: 10}}>
+            <View style={{borderWidth: 1, borderColor: colors.grey, padding: 5, borderRadius: 5}}>
+                <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                    <CaptionText style={{fontSize: 16, color: colors.grey}}>{item.id}</CaptionText>
                 </View>
-                <View><InfoBox text={item.deliveryType} style={{paddingHorizontal: 20}}/></View>
+                <Divider style={{marginVertical: 5}} />
+                <View>
+                    <CaptionText style={{fontSize: 16}}>Ordered By:</CaptionText>
+                    <HeaderText style={{fontSize: 18}}>{item.user.name}</HeaderText>
+                    <HeaderText style={{fontSize: 14}}>{item.user.address}</HeaderText>
+                    <HeaderText style={{fontSize: 14}}>+91 {item.user.phone}</HeaderText>
+                </View>
             </View>
-            </View>
+            <CaptionText style={{marginTop: 10, fontSize: 18}}>Ordered Items:</CaptionText>
+        </View>
     )
 }
 

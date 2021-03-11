@@ -34,7 +34,7 @@ const ProfilePageOrdersItem: React.FC<Props> = ({navigation, item}) => {
             </View>
             <View style={{display: "flex", justifyContent: "flex-end", flex: 1}}>
                 <View style={{height: 50, padding: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, borderTopWidth: 1, borderColor: colors.grey}}>
-                    <BodyText style={{color: colors.primary, textAlign: "center", justifyContent: "flex-end"}}>Out For Delivery</BodyText>
+                    <BodyText style={{color: colors.primary, textAlign: "center", justifyContent: "flex-end"}}>{item.status}</BodyText>
                 </View>
             </View>
         </RoundView>

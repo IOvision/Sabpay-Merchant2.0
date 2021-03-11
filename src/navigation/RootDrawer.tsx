@@ -25,7 +25,7 @@ const RootDrawer: React.FC = () => {
             )
         }>
             <Drawer.Screen name="My Profile" component={ProfileTab} />
-            <Drawer.Screen name="My Store" component={StoreTab} />
+            {/* <Drawer.Screen name="My Store" component={StoreTab} /> */}
             <Drawer.Screen name="Help and Support" component={HelpTab} />
         </Drawer.Navigator>
     )

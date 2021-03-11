@@ -1,4 +1,4 @@
-type colorName = "primary" | "white" | "background" | "grey" | "lightGrey" | "mediumGrey" | "darkgrey" | "blue" | "danger" | "gold" | "green"
+type colorName = "primary" | "white" | "background" | "grey" | "lightGrey" | "mediumGrey" | "darkgrey" | "blue" | "danger" | "gold" | "green" | "red"
 
 type colors = { [color in colorName]: string}
 
@@ -14,6 +14,7 @@ const colors: colors = {
   danger: '#ff5252',
   gold: '#FFD700',
   green: '#008000',
+  red: '#eb3921'
 };
 
 export default colors

@@ -14,6 +14,7 @@ import InventoryMetadata from '../models/InventoryMetadata'
 import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
 import { API, graphqlOperation } from 'aws-amplify'
 import { onCreateOrder } from '../../graphql/subscriptions'
+import { useIsFocused } from '@react-navigation/core'
 
 export interface Props {
   navigation: any,
@@ -26,9 +27,11 @@ export interface Props {
 const ProfileTab: React.FC<Props> = ({navigation, merchant, invMetadata}) => {
   const [lastKey, setLastKey] = useState(null)
   const [data, setData] = useState<Order[]>([])
+  const isFocused = useIsFocused()
   useEffect(() => {
     getActiveOrders(invMetadata.SK)
     .then(res => {
+      console.log(res)
       setData(res)
     })
     .catch(err => console.log(err))
@@ -36,14 +39,15 @@ const ProfileTab: React.FC<Props> = ({navigation, merchant, invMetadata}) => {
       graphqlOperation(onCreateOrder, { PK: invMetadata.SK })
     ).subscribe({
       next: ({ provider, value }) => {
-       console.log(value.data.onCreateOrder)
+        var a = Order.fullDetails(value.data.onCreateOrder)
+        setData([ a, ...data ])
       },
       error: error => console.warn(error)
     })
     return () => {
       orderSub.unsubscribe();
     }
-  }, [merchant])
+  }, [isFocused])
 
     return (
         <View style={{backgroundColor: colors.primary, flex: 1}}>
