@@ -1,3 +1,4 @@
+import SplashScreen from 'react-native-splash-screen'
 import React from 'react'
 import Root from './src/navigation/Root'
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
@@ -68,6 +69,7 @@ class App extends React.Component<Props, State> {
             ...this.state,
             isLoading: false
           })
+          SplashScreen.hide()
         })
         .catch(err => console.log(err))
       } else {
@@ -75,6 +77,7 @@ class App extends React.Component<Props, State> {
           ...this.state,
           isLoading: false
         })
+        SplashScreen.hide()
       }
     })
     .catch(err => console.log(err))
@@ -89,7 +92,7 @@ class App extends React.Component<Props, State> {
     }
 
     return (
-      <View><CaptionText>Hello</CaptionText></View>
+      <View></View>
     )
   }
 }
