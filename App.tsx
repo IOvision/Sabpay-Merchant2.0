@@ -14,7 +14,6 @@ import { setInventory, setInventoryMetadata } from './src/redux/actions/inventor
 import InventoryMetadata from './src/models/InventoryMetadata'
 import { getInventoryMetadata, getInventory } from './src/requests'
 import { RootState } from './src/redux/store'
-import { CaptionText } from './src/components/atoms/Text'
 
 Amplify.configure(awsConfig)
 Auth.configure({

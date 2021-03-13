@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StackHeader from '../components/atoms/StackHeader'
 import Header from '../components/atoms/Header'
 
@@ -22,10 +22,14 @@ export interface Props {
 }
 
 const MainStack: React.FC<Props> = ({isSignedIn}) => {
+  const [signedIn, setSignedIn] = useState(isSignedIn)
+  useEffect(() => {
+    setSignedIn(isSignedIn)
+  }, [isSignedIn])
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={ isSignedIn ? "Main" : "LoginTab" }
+        initialRouteName={ signedIn ? "Main" : "LoginTab" }
         screenOptions={{
           header: ({ scene, previous, navigation}) => {
               return (

@@ -9,15 +9,20 @@ import { connect } from 'react-redux';
 import SmsRetriever from 'react-native-sms-retriever'
 import { Auth } from 'aws-amplify'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserData} from '../requests'
+import {getInventory, getInventoryMetadata, getUserData} from '../requests'
 import Merchant from '../models/Merchant'
+import { setInventory, setInventoryMetadata } from '../redux/actions/inventory'
+import Inventory from '../models/Inventory'
+import InventoryMetadata from '../models/InventoryMetadata'
 
 
 export interface Props {
     navigation: any,
-    setSignedIn: (merchant: Merchant) => void
+    setSignedIn: (merchant: Merchant) => void,
+    setInventory: (inventory: Inventory) => void,
+    setInventoryMetadata: (invMetadata: InventoryMetadata) => void,
 }
-const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
+const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setInventoryMetadata}) => {
     const [phone, setPhone] = useState("")
     const [otp, setOtp] = useState("")
     const [state, setState] = useState("phone")
@@ -87,8 +92,13 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
                     }
                 }
                 AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
-                setSignedIn(resp)
-                navigation.replace("Main")
+                Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
+                .then(merchant => {
+                    setInventoryMetadata(merchant[0])
+                    setInventory(merchant[1])
+                    setSignedIn(resp)
+                    navigation.replace("Main")
+                })
             })
         } catch (error) {
             console.log('error', error)
@@ -123,7 +133,9 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setSignedIn: (merchant: Merchant) => dispatch(signIn(merchant))
+        setSignedIn: (merchant: Merchant) => dispatch(signIn(merchant)),
+        setInventory: (inventory: Inventory) => dispatch(setInventory(inventory)),
+        setInventoryMetadata: (invMeta: InventoryMetadata) => (dispatch(setInventoryMetadata(invMeta)))
     }
 }
 
