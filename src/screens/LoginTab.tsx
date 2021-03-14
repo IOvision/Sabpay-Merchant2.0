@@ -85,20 +85,25 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
             const data = await Auth.sendCustomChallengeAnswer(user, otp);
             console.log(data.signInUserSession.idToken.jwtToken)
             getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
+                console.log("Data ->", err, resp)
                 if (err) {
                     if(err === 'signup'){
-                        navigation.navigate('SignUpTab', { phone: phone })
+                        navigation.navigate('InventoryCreate', { phone: phone, state: 0 })
+                        return
+                    }
+                    else if (err === 'inventory') {
+                        navigation.navigate('InventoryCreate', { phone: phone, state: 1 })
                         return
                     }
                 }
-                AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
-                Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
-                .then(merchant => {
-                    setInventoryMetadata(merchant[0])
-                    setInventory(merchant[1])
-                    setSignedIn(resp)
-                    navigation.replace("Main")
-                })
+                // AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
+                // Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
+                // .then(merchant => {
+                //     setInventoryMetadata(merchant[0])
+                //     setInventory(merchant[1])
+                //     setSignedIn(resp)
+                //     navigation.replace("Main")
+                // })
             })
         } catch (error) {
             console.log('error', error)

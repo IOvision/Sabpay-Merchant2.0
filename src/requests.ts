@@ -7,7 +7,6 @@ import Merchant from './models/Merchant'
 import Inventory from './models/Inventory'
 import Order from './models/Order'
 import InventoryMetadata from './models/InventoryMetadata'
-import { CheckBox } from 'react-native'
 
 export const getUserData = (phone: string, token: string, cb: (err: any, resp: Merchant) => void) => {
     axios.get(`/merchant/${phone}`, {
@@ -16,12 +15,18 @@ export const getUserData = (phone: string, token: string, cb: (err: any, resp: M
         }
     })
     .then(res => {
-        if(res.data.data[0].username)
-            cb(false, new Merchant(res.data.data[0]))
-        else
+        if(res.data.data && res.data.data[0] && res.data.data[0].username){
+            if (res.data.data[0].invId)
+                cb(false, new Merchant(res.data.data[0]))
+            else
+                cb('inventory', null)
+        }
+        else {
+            console.log("else")
             cb('signup', null)
+        }
     })
-    .catch(err => cb(err.response, null))
+    .catch(err => cb(err, null))
 }
 
 
@@ -40,6 +45,7 @@ export const putUserData = (a: {name: string, phone: string}, cb: (err: any, res
             }
         })
         .then(res => {
+            console.log(res.data)
             cb(false, new Merchant(res.data.data[0]))
         })
         .catch(err => {
@@ -155,11 +161,12 @@ export const updateTags = (inv: Inventory, invId: string, category: string, arra
         axios.put(`inventory/${invId}`, {
             UpdateExpression: "set tags = :n",
             ExpressionAttributeValues: {
-                ":n": inv.tags
+                ":n": {
+                    ...inv.tags,
+                }
             }
         })
         .then(res => {
-            console.log(res)
             resolve(true)
         })
         .catch(err => reject(err))
