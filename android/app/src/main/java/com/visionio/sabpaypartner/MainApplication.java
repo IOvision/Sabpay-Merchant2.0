@@ -1,4 +1,4 @@
-package com.sabpaymerchant;
+package com.visionio.sabpaypartner;
 
 import android.app.Application;
 import android.content.Context;

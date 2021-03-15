@@ -1,4 +1,4 @@
-package com.sabpaymerchant;
+package com.visionio.sabpaypartner;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

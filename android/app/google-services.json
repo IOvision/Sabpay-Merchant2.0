@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "982730627",
+    "project_id": "sabpay2",
+    "storage_bucket": "sabpay2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982730627:android:8a6d058c483ebcc06658b6",
+        "android_client_info": {
+          "package_name": "com.visionio.sabpaypartner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982730627-m9r7h2bngvfrmnqvs6ou9kgmad4k7c8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB7IVfdtnpS_j1zqD0FzFBv_JqtWdg2rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982730627-m9r7h2bngvfrmnqvs6ou9kgmad4k7c8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
