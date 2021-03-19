@@ -14,6 +14,7 @@ import Merchant from '../models/Merchant'
 import { setInventory, setInventoryMetadata } from '../redux/actions/inventory'
 import Inventory from '../models/Inventory'
 import InventoryMetadata from '../models/InventoryMetadata'
+import OtpInput from '../components/atoms/OtpInput'
 
 
 export interface Props {
@@ -96,14 +97,14 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
                         return
                     }
                 }
-                // AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
-                // Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
-                // .then(merchant => {
-                //     setInventoryMetadata(merchant[0])
-                //     setInventory(merchant[1])
-                //     setSignedIn(resp)
-                //     navigation.replace("Main")
-                // })
+                AsyncStorage.setItem('@Merchant', JSON.stringify(resp))
+                Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
+                .then(merchant => {
+                    setInventoryMetadata(merchant[0])
+                    setInventory(merchant[1])
+                    setSignedIn(resp)
+                    navigation.replace("Main")
+                })
             })
         } catch (error) {
             console.log('error', error)
@@ -123,7 +124,7 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
     }
     return (
         <View style={styles.container}>
-            <BodyText style={{margin: 40, marginTop: 100}}>Enter Otp you received</BodyText>
+            <BodyText style={{margin: 40, marginTop: 100}}>Enter Verification code you received</BodyText>
                 <InputText value={otp} placeholder="0-9" onChangeText={setOtp} style={{marginHorizontal: 40}}/>
                 <HeaderText style={{color: colors.primary, marginTop: 30, marginHorizontal: 40}}>Resend Otp?</HeaderText>
                 <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
