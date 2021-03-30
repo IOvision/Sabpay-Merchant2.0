@@ -98,6 +98,15 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
                 null
               )
             }
+            {
+              status == "DECLINED" ? (
+                <View style={{display: "flex", flexDirection: "row",height: 50, justifyContent: "center", alignItems: "center"}}>
+                  <HeaderText>Order has been declined</HeaderText>
+                </View>
+              ) : (
+                null
+              )
+            }
           </View>
         </View>
     )

@@ -29,11 +29,11 @@ const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
     const [latitude, setLatitude] = useState(0)
     const [longitude, setLongitude] = useState(0)
     const [name, setName] = useState("")
-    const [businessName, setBusinessName] = useState("Rakshit ki Dukaan")
-    const [locality, setLocality] = useState("Sector-M, Ashiyana, Kanpur Road")
-    const [town, setTown] = useState("Lucknow")
-    const [city, setCity] = useState("Uttar Pradesh")
-    const [landmark, setLandmark] = useState("Mera Ghar")
+    const [businessName, setBusinessName] = useState("")
+    const [locality, setLocality] = useState("")
+    const [town, setTown] = useState("")
+    const [city, setCity] = useState("")
+    const [landmark, setLandmark] = useState("")
     
     const handleName = () => {
         const a = {

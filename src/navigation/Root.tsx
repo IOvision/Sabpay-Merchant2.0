@@ -42,11 +42,7 @@ const MainStack: React.FC<Props> = ({isSignedIn}) => {
           name="LoginTab"
           component={LoginTab}
           options={{
-            header: ({ scene, previous, navigation}) => {
-              return (
-                <StackHeader text="Log-In" navigation={navigation} />
-              )
-            }
+            header: ({ scene, previous, navigation}) => null
           }}
         />
         <Stack.Screen

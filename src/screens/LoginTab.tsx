@@ -1,12 +1,10 @@
 import React, {useState} from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import InputText from '../components/atoms/InputText'
 import { BodyText, HeaderText } from '../components/atoms/Text'
 import colors from '../assets/colors'
-import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
 import { signIn } from '../redux/actions/merchant'
 import { connect } from 'react-redux';
-import SmsRetriever from 'react-native-sms-retriever'
 import { Auth } from 'aws-amplify'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getInventory, getInventoryMetadata, getUserData} from '../requests'
@@ -15,6 +13,9 @@ import { setInventory, setInventoryMetadata } from '../redux/actions/inventory'
 import Inventory from '../models/Inventory'
 import InventoryMetadata from '../models/InventoryMetadata'
 import OtpInput from '../components/atoms/OtpInput'
+import ButtonWIthActivityIndicator from '../components/atoms/ButtonWIthActivityIndicator'
+import TimedButton from '../components/atoms/TimedButton'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export interface Props {
@@ -26,12 +27,11 @@ export interface Props {
 const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setInventoryMetadata}) => {
     const [phone, setPhone] = useState("")
     const [otp, setOtp] = useState("")
-    const [state, setState] = useState("phone")
+    const [state, setState] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
     const [user, setUser] = useState('null')
     var temp: any
-
 
     const validateNumber = (number: string) => {
         return number.length == 10;
@@ -39,42 +39,43 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
 
     const signUp = async () => {
         if(validateNumber(phone)) {
+            setIsLoading(true)
             try {
                 const { user } = await Auth.signUp({
                     username: `+91${phone}`,
                     password: Date.now().toString()
                 })
-                startSmsListener()
+                signIn()
             } catch (error) {
                 if (error.code === "UsernameExistsException")
-                startSmsListener()
+                signIn()
             }
-            setState("otp")
         } else {
             setError(true)
         }
     }
 
-    const startSmsListener = async () => {
-        try {
-            setIsLoading(true)
-            signIn()
-            const registered = await SmsRetriever.startSmsRetriever()
-            if (registered) {
-                SmsRetriever.addSmsListener(event => {
-                    const a = /(\d{4})/g.exec(event.message)[1]
-                    SmsRetriever.removeSmsListener()
-                    confirmSignIn(a)
-                })
-            }
-        } catch (error) {
+    // const startSmsListener = async () => {
+    //     try {
+    //         signIn()
+    //         const registered = await SmsRetriever.startSmsRetriever()
+    //         if (registered) {
+    //             SmsRetriever.addSmsListener(event => {
+    //                 const a = /(\d{4})/g.exec(event.message)[1]
+    //                 SmsRetriever.removeSmsListener()
+    //                 confirmSignIn(a)
+    //             })
+    //         }
+    //     } catch (error) {
             
-        }  
-    }
+    //     }  
+    // }
 
     const signIn = async () => {
         try {
             temp = await Auth.signIn(`+91${phone}`)
+            setState(1)
+            setIsLoading(false)
             setUser(temp)
         } catch (error) {
             console.log(error)
@@ -83,6 +84,7 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
 
     const confirmSignIn = async (otp: string) => {
         try {
+            setIsLoading(true)
             const data = await Auth.sendCustomChallengeAnswer(user, otp);
             console.log(data.signInUserSession.idToken.jwtToken)
             getUserData(phone, data.signInUserSession.idToken.jwtToken, (err, resp) => {
@@ -107,33 +109,58 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
                 })
             })
         } catch (error) {
-            console.log('error', error)
+            setIsLoading(false)
         }
     }
 
-    if(state == "phone") {
+    if(state == 0) {
         return (
             <View style={styles.container}>
-                <InputText value={phone} placeholder="" onChangeText={setPhone} preText={"+91"} style={{marginHorizontal: 40, marginTop: 100, marginBottom: 10}} editable={true} error={error ? "Invalid" : ""} keyboardType={"phone-pad"}/>
-                <BodyText style={{color: colors.grey, marginHorizontal: 40}}>An Otp would be sent to verify your Mobile Number</BodyText>
-                <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                    <PurpleRoundBtn onPress={signUp} text="Next" style={{paddingHorizontal: 100, marginBottom: 10}} />
+                <View>
+                    <Image source={require("../assets/logo.png")} style={{width: 200, height: 100, alignSelf: 'center', marginTop: 20}} />
+                    <BodyText 
+                        style={{
+                            color: colors.darkgrey, 
+                            marginHorizontal: 40,
+                            marginTop: 80
+                    }}>
+                        Enter your mobile number
+                    </BodyText>
+                    <InputText 
+                        value={phone} 
+                        placeholder="" 
+                        onChangeText={setPhone} 
+                        preText={"+91"} 
+                        style={{marginHorizontal: 40, marginBottom: 10}} 
+                        editable={true} error={error ? "Invalid" : ""} 
+                        keyboardType={"phone-pad"}
+                    />
                 </View>
+                <ButtonWIthActivityIndicator text="Next" isLoading={isLoading} onPress={signUp} />
             </View>
         )
     }
     return (
         <View style={styles.container}>
-            <BodyText style={{margin: 40, marginTop: 100}}>Enter Verification code you received</BodyText>
-                <InputText value={otp} placeholder="0-9" onChangeText={setOtp} style={{marginHorizontal: 40}}/>
-                <HeaderText style={{color: colors.primary, marginTop: 30, marginHorizontal: 40}}>Resend Otp?</HeaderText>
-                <View style={{justifyContent: "flex-end", marginBottom: 30, alignItems: "center", flex: 1}}>
-                    <PurpleRoundBtn text="Log-In" style={{paddingHorizontal: 120, marginBottom: 10, alignItems: "center"}} onPress={() => {
-                        SmsRetriever.removeSmsListener()
-                        confirmSignIn(otp)
-                    }}/>
+            <View>
+                <View style={{width: "100%", height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 18}}>
+                    <Icon name="arrow-left" color={colors.primary} size={25} onPress={() => setState(0)}/>
+                    <View style={{display: "flex", flexDirection: "row", flex: 1, justifyContent: "center", marginStart: -40}}>
+                        <HeaderText style={{alignSelf: "center", color: colors.primary, fontSize: 20}}>Code Verification</HeaderText>
+                    </View>
+                </View>
+                <View style={{padding: 40}}>
+                    <BodyText style={{maxWidth: 400}}>Enter the verification code you received</BodyText>
+                    <OtpInput length={4} style={{marginVertical: 20}} setOtp={setOtp} otp={otp} />
+                    <TimedButton onPress={signIn}/>
                 </View>
             </View>
+            <ButtonWIthActivityIndicator text="Login" isLoading={isLoading} onPress={() => {
+                if (otp.length < 4)
+                    alert("Enter Verification Code")
+                confirmSignIn(otp)
+            }} />
+        </View>
     )
 }
 
@@ -151,6 +178,7 @@ const styles = StyleSheet.create({
     container: {
         display: "flex", 
         flex: 1,
-        backgroundColor: "white"
+        backgroundColor: "white",
+        justifyContent: "space-between"
     }
 })

@@ -11,9 +11,9 @@ import { Provider } from 'react-redux'
 import configureStore from './src/redux/store'
 
 const store = configureStore()
-const SabPayMerchant = () =>
+const SabPayPartner = () =>
     <Provider store={store}>
         <App />
     </Provider>
 
-AppRegistry.registerComponent(appName, () => SabPayMerchant);
+AppRegistry.registerComponent(appName, () => SabPayPartner);
