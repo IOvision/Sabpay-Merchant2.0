@@ -25,15 +25,14 @@ Auth.configure({
 PushNotification.onRegister(token => {
   console.log('onRegister', token);
   PushNotification.updateEndpoint(token);
-  AsyncStorage.setItem('@Token', token)
+  AsyncStorage.setItem('Token', token)
 });
 PushNotification.onNotification(notification => {
   if (notification.foreground) {
     console.log('onNotification foreground', notification);
     console.log('onNotification foreground', notification.data.default);
   } else {
-    console.log('onNotification background or closed',
-               notification);
+    console.log('onNotification background or closed', notification);
   }
   // extract the data passed in the push notification
   // const data = JSON.parse(notification.data['pinpoint.jsonBody']);

@@ -1,4 +1,4 @@
-import axios from 'axios'
+    import axios from 'axios'
 import { Auth } from 'aws-amplify'
 
 axios.defaults.baseURL = "https://oqy97amyd0.execute-api.ap-south-1.amazonaws.com/v1"
@@ -191,14 +191,11 @@ export const getActiveOrders = (invId: string) => new Promise<Order[]>((resolve,
     })
 })
 
-//AsyncStorage.setItem('@Token', token)
-AsyncStorage.getItem('@Token')
-
 export const postToken = async (phone: string, cb: (err: any, resp: any) => void) => {
     Auth.currentSession()
     .then(async data => {
         const jwtToken = data.getIdToken().getJwtToken()
-        const token = AsyncStorage.getItem('@Token')
+        const token = await AsyncStorage.getItem("Token");
         axios.put(`/merchant/${phone}/token`, {
             token: token
         }, {
@@ -217,7 +214,7 @@ export const updateToken = (phone: string, cb: (err: any, resp: any) => void) =>
     Auth.currentSession()
     .then(async data => {
         const jwtToken = data.getIdToken().getJwtToken()
-        const token = AsyncStorage.getItem('@Token')
+        const token = await AsyncStorage.getItem("Token");
         axios.put(`/merchant/${phone}/token`, {
             token: token
         }, {
@@ -229,5 +226,30 @@ export const updateToken = (phone: string, cb: (err: any, resp: any) => void) =>
             cb(false, res.data)
         })
         .catch(err => cb(err, null))
+    })
+}
+
+export const deleteToken = (phone: string, cb: (err: any, resp: any) => void) => {
+    Auth.currentSession()
+    .then(async data => {
+        const jwtToken = data.getIdToken().getJwtToken()
+        axios.delete(`/merchant/${phone}/token`, {
+            headers: {
+                "SP-TOKEN": jwtToken
+            }
+        })
+    })
+}
+
+export const notify = (title: string, body: string, cb: (err: any, resp: any) => void) => {
+    axios.post('/notify/', {
+        params: { "title": title, "body": body }
+    })
+    .then(res => {
+        cb(false, res.data.data[0])
+    })
+    .catch(err => {
+        console.log(err)
+        cb(err, null)
     })
 }

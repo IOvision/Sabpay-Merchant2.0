@@ -10,18 +10,25 @@ import { signOut } from '../../redux/actions/merchant'
 import { RootState } from '../../redux/store'
 import Auth from '@aws-amplify/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {deleteToken} from '../../requests'
+import Merchant from '../../models/Merchant'
 
 export interface Props {
     setSignedOut: () => void,
     isSignedIn: boolean,
-    navigation: any
+    navigation: any,
+    merchant: Merchant
 }
 
 const CustomDrawerContent: React.FC<Props> = (props) => {
     const signOut = () => {
         AsyncStorage.removeItem('@Merchant')
-        .then(res => {
+        .then(async res => {
             props.setSignedOut();
+            deleteToken(props.merchant.phone, (err, resp) => {
+                if (err) return console.log("Error", err)
+                console.log(resp)
+            })
             Auth.signOut()
             props.navigation.replace('LoginTab')
         })
@@ -45,7 +52,8 @@ const CustomDrawerContent: React.FC<Props> = (props) => {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        isSignedIn: state.merchantReducer.signedIn
+        isSignedIn: state.merchantReducer.signedIn,
+        merchant: state.merchantReducer.merchant
     }
 }
 

@@ -16,6 +16,7 @@ import OtpInput from '../components/atoms/OtpInput'
 import ButtonWIthActivityIndicator from '../components/atoms/ButtonWIthActivityIndicator'
 import TimedButton from '../components/atoms/TimedButton'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {updateToken} from '../requests'
 
 
 export interface Props {
@@ -105,6 +106,10 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
                     setInventoryMetadata(merchant[0])
                     setInventory(merchant[1])
                     setSignedIn(resp)
+                    updateToken(phone, (err, resp) => {
+                        if (err) return console.log("Error", err)
+                        console.log(resp)
+                    })
                     navigation.replace("Main")
                 })
             })

@@ -13,7 +13,7 @@ import { HeaderText } from '../components/atoms/Text'
 import InputText from '../components/atoms/InputText'
 import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
 import Auth from '@aws-amplify/auth'
-
+import {postToken} from '../requests'
 export interface Props {
     navigation: any,
     route: {
@@ -71,6 +71,10 @@ const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
                     AsyncStorage.setItem("@Merchant", JSON.stringify(resp))
                     .then(data => {
                         signIn(resp)
+                        postToken(route.params.phone, (err, resp) => {
+                            if (err) return console.log("Error", err)
+                            console.log(resp)
+                        })
                         navigation.pop()
                     })
                     .catch(err => {
