@@ -75,7 +75,7 @@ const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
                             if (err) return console.log("Error", err)
                             console.log(resp)
                         })
-                        navigation.pop()
+                        navigation.replace("Main")
                     })
                     .catch(err => {
                         console.log(err)
