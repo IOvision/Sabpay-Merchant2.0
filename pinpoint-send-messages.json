@@ -1,0 +1,14 @@
+{
+    "ApplicationId": "arn:aws:sns:ap-south-1:843829705417:app/GCM/SabPayFCM",
+    "MessageRequest": {
+      "Endpoints": {
+        "c61d0690-93a5-11eb-812c-713c9b553a9c": {}
+      },
+      "MessageConfiguration": {
+        "DefaultPushNotificationMessage": {
+          "Body": "Test Body",
+          "Title": "Test Title"
+        }
+      }
+    }
+  }

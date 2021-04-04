@@ -1,7 +1,7 @@
 import SplashScreen from 'react-native-splash-screen'
 import React from 'react'
 import Root from './src/navigation/Root'
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
+import Amplify, { Auth, Analytics, graphqlOperation } from 'aws-amplify'
 import awsConfig from './aws-exports'
 import AmplifyStorage from './src/models/AmplifyStorage'
 import Merchant from './src/models/Merchant'
@@ -14,12 +14,42 @@ import { setInventory, setInventoryMetadata } from './src/redux/actions/inventor
 import InventoryMetadata from './src/models/InventoryMetadata'
 import { getInventoryMetadata, getInventory } from './src/requests'
 import { RootState } from './src/redux/store'
+import PushNotification from '@aws-amplify/pushnotification';
+
 
 Amplify.configure(awsConfig)
 Auth.configure({
   storage: AmplifyStorage
 })
+// App.js
+PushNotification.onRegister(token => {
+  console.log('onRegister', token);
+  PushNotification.updateEndpoint(token);
+  AsyncStorage.setItem('@Token', token)
+});
+PushNotification.onNotification(notification => {
+  if (notification.foreground) {
+    console.log('onNotification foreground', notification);
+    console.log('onNotification foreground', notification.data.default);
+  } else {
+    console.log('onNotification background or closed',
+               notification);
+  }
+  // extract the data passed in the push notification
+  // const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+  //console.log('onNotification data', notification);
+  // iOS only
+  // notification.finish(PushNotificationIOS.FetchResult.NoData);
+});
+PushNotification.onNotificationOpened(notification => {
+  console.log('onNotificationOpened', notification);
+  // extract the data passed in the push notification
+  // const data = JSON.parse(notification['pinpoint.jsonBody']);
+  //console.log('onNotificationOpened data', notification);
+});
 
+const endpointId = Analytics.getPluggable('AWSPinpoint')._config.endpointId;
+console.log("endpoint: ", endpointId)
 export interface Props {
   setSignedIn: (merchant: Merchant) => void,
   setInventory: (inventory: Inventory) => void,

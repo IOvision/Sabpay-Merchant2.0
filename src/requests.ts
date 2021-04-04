@@ -8,6 +8,8 @@ import Inventory from './models/Inventory'
 import Order from './models/Order'
 import InventoryMetadata from './models/InventoryMetadata'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 export const getUserData = (phone: string, token: string, cb: (err: any, resp: Merchant) => void) => {
     axios.get(`/merchant/${phone}`, {
         headers: {
@@ -188,3 +190,44 @@ export const getActiveOrders = (invId: string) => new Promise<Order[]>((resolve,
         .catch(err => reject(err))
     })
 })
+
+//AsyncStorage.setItem('@Token', token)
+AsyncStorage.getItem('@Token')
+
+export const postToken = async (phone: string, cb: (err: any, resp: any) => void) => {
+    Auth.currentSession()
+    .then(async data => {
+        const jwtToken = data.getIdToken().getJwtToken()
+        const token = AsyncStorage.getItem('@Token')
+        axios.put(`/merchant/${phone}/token`, {
+            token: token
+        }, {
+            headers: {
+                "SP-TOKEN": jwtToken
+            }
+        })
+        .then(res => {
+            cb(false, res.data)
+        })
+        .catch(err => cb(err, null))
+    })
+}
+
+export const updateToken = (phone: string, cb: (err: any, resp: any) => void) => {
+    Auth.currentSession()
+    .then(async data => {
+        const jwtToken = data.getIdToken().getJwtToken()
+        const token = AsyncStorage.getItem('@Token')
+        axios.put(`/merchant/${phone}/token`, {
+            token: token
+        }, {
+            headers: {
+                "SP-TOKEN": jwtToken
+            }
+        })
+        .then(res => {
+            cb(false, res.data)
+        })
+        .catch(err => cb(err, null))
+    })
+}
