@@ -26,6 +26,7 @@ const ChooseTag: React.FC<Props> = ({navigation, route, inventory, merchant}) =>
         updateTags(inventory, merchant.invId.split("+")[1], data.title, tagList)
         .then(res => console.log(res))
         .catch(err => console.log(err))
+        navigation.pop()
     }
     return (
         <View style={{display: "flex", flex: 1, backgroundColor: "white", justifyContent: "space-between"}}>

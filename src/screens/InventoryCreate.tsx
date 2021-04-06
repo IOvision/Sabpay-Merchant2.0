@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 import { StyleSheet, View } from 'react-native'
-import InventoryCreateInfo from '../components/molecules/InventoryCreateInfo'
-import InventoryCreateMore from '../components/molecules/InventoryCreateMore'
 import { connect } from 'react-redux'
 import { RootState } from '../redux/store'
 import Merchant from '../models/Merchant'
@@ -14,6 +12,9 @@ import InputText from '../components/atoms/InputText'
 import PurpleRoundBtn from '../components/atoms/PurpleRoundBtn'
 import Auth from '@aws-amplify/auth'
 import {postToken} from '../requests'
+import InventoryMetadata from '../models/InventoryMetadata'
+import { setInventory, setInventoryMetadata } from '../redux/actions/inventory'
+import {getInventory, getInventoryMetadata} from '../requests'
 export interface Props {
     navigation: any,
     route: {
@@ -22,9 +23,9 @@ export interface Props {
             state: number
         }
     }
-    signIn: (merchant: Merchant) => void
+    setSignedIn: (merchant: Merchant) => void
 }
-const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
+const InventoryCreate: React.FC<Props> = ({navigation, route, setSignedIn}) => {
     const [state, setState] = useState(route.params.state)
     const [latitude, setLatitude] = useState(0)
     const [longitude, setLongitude] = useState(0)
@@ -70,11 +71,16 @@ const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
                     if (err) console.log(err)
                     AsyncStorage.setItem("@Merchant", JSON.stringify(resp))
                     .then(data => {
-                        signIn(resp)
-                        postToken(route.params.phone, (err, resp) => {
-                            if (err) return console.log("Error", err)
-                            navigation.replace("Main")
-                        })
+                        Promise.all([getInventoryMetadata(resp.invId), getInventory(resp.invId.split("+")[1])])
+                            .then(merchant => {
+                                setInventoryMetadata(merchant[0])
+                                setInventory(merchant[1])
+                                setSignedIn(resp)
+                                postToken(route.params.phone, (err, resp) => {
+                                    if (err) return console.log("Error", err)
+                                    navigation.replace("Main")
+                                })
+                            })
                     })
                     .catch(err => {
                         console.log(err)
@@ -119,7 +125,9 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signIn: (merchant: Merchant) => dispatch(signIn(merchant)),
+        setSignedIn: (merchant: Merchant) => dispatch(signIn(merchant)),
+        setInventory: (inventory: Inventory) => dispatch(setInventory(inventory)),
+        setInventoryMetadata: (invMeta: InventoryMetadata) => (dispatch(setInventoryMetadata(invMeta)))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(InventoryCreate)

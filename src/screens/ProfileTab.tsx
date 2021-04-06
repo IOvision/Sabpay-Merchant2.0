@@ -13,6 +13,7 @@ import InventoryMetadata from '../models/InventoryMetadata'
 import { API, graphqlOperation } from 'aws-amplify'
 import { onCreateOrder } from '../../graphql/subscriptions'
 import { useIsFocused } from '@react-navigation/core'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export interface Props {
   navigation: any,
