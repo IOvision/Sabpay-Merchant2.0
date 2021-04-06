@@ -195,8 +195,8 @@ export const postToken = async (phone: string, cb: (err: any, resp: any) => void
     Auth.currentSession()
     .then(async data => {
         const jwtToken = data.getIdToken().getJwtToken()
-        const token = await AsyncStorage.getItem("Token");
-        axios.put(`/merchant/${phone}/token`, {
+        const token = await AsyncStorage.getItem("@Token");
+        axios.post(`/merchant/${phone}/token`, {
             token: token
         }, {
             headers: {
@@ -214,7 +214,8 @@ export const updateToken = (phone: string, cb: (err: any, resp: any) => void) =>
     Auth.currentSession()
     .then(async data => {
         const jwtToken = data.getIdToken().getJwtToken()
-        const token = await AsyncStorage.getItem("Token");
+        const token = await AsyncStorage.getItem("@Token");
+        console.log("The token is :", token)
         axios.put(`/merchant/${phone}/token`, {
             token: token
         }, {

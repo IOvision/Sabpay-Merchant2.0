@@ -108,9 +108,8 @@ const LoginTab: React.FC<Props> = ({navigation, setSignedIn, setInventory, setIn
                     setSignedIn(resp)
                     updateToken(phone, (err, resp) => {
                         if (err) return console.log("Error", err)
-                        console.log(resp)
+                        navigation.replace("Main")
                     })
-                    navigation.replace("Main")
                 })
             })
         } catch (error) {

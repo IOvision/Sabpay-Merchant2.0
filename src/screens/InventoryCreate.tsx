@@ -73,9 +73,8 @@ const InventoryCreate: React.FC<Props> = ({navigation, signIn, route}) => {
                         signIn(resp)
                         postToken(route.params.phone, (err, resp) => {
                             if (err) return console.log("Error", err)
-                            console.log(resp)
+                            navigation.replace("Main")
                         })
-                        navigation.replace("Main")
                     })
                     .catch(err => {
                         console.log(err)
