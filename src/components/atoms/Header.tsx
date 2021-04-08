@@ -79,9 +79,9 @@ const Header: React.FC<Props> = ({marginTop, navigation, back, color}) => {
     <View style={[HeaderStyle.container]}>
       <Icon name="menu" color={Colors.primary} size={24} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
       <View style={{display: "flex", flexDirection: "row"}}>
-        <Icon style={{marginHorizontal: 30}} name="bell" color={Colors.primary} size={24} onPress={() => navigation.push("OrderDetailTab",{
+        {/* <Icon style={{marginHorizontal: 30}} name="bell" color={Colors.primary} size={24} onPress={() => navigation.push("OrderDetailTab",{
           item: DATA, newOrder: true
-        })} />
+        })} /> */}
         <Icon name="plus-circle-outline" color={Colors.primary} size={24} onPress={() => navigation.push("ChooseCategory")} />
       </View>
     </View>
