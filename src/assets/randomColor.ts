@@ -24,7 +24,7 @@ export const getColorAccordingToStatus = (status: String) => {
         case "PLACED": return "#A9A9A9";
         case "ACCEPTED": return "#FFBF00";
         case "REJECTED": return "#eb3921";
-        case "COMPLETE": return "#74eb21";
+        case "COMPLETED": return "#74eb21";
         case "DELIVERED": return "#21bdeb";
         default: return "#ffffff";
     }

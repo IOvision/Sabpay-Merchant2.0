@@ -13,6 +13,7 @@ import { RootState } from '../redux/store'
 import InventoryMetadata from '../models/InventoryMetadata'
 import { updateOrderStatus } from '../../graphql/mutations'
 import { getColorAccordingToStatus } from '../assets/randomColor'
+import { OrderStatus } from '../models/OrderStatus'
 
 export interface Props {
   invMetadata: InventoryMetadata,
@@ -28,15 +29,18 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
   const [status, setStatus] = useState<String>(route.params.item.status)
   const updateOrder = async (status: string) => {
     const SK = route.params.item.id
-    console.log('keys :', {PK: invMetadata.SK, SK: SK, status: status})
     try {
-      const statusUpdate = await API.graphql(graphqlOperation(updateOrderStatus, {PK: invMetadata.SK, SK: SK, status: status}))
+      if (status == OrderStatus.DECLINED || status == OrderStatus.COMPLETED) {
+        await API.graphql(graphqlOperation(updateOrderStatus, {PK: invMetadata.SK, SK: SK, status: status, active: 0}))
+      } else {
+        await API.graphql(graphqlOperation(updateOrderStatus, {PK: invMetadata.SK, SK: SK, status: status, active: 1}))
+      }
       setStatus(status)
     } catch(err) {
       console.log(err)
     }
   }
-
+  console.log(route.params.item.status)
   return (
         <View style={{display: "flex", flex: 1, backgroundColor: "white"}}>
           <FlatList
@@ -52,15 +56,15 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
           />
           <View style={{borderStyle: "solid", borderTopWidth: 1, borderTopColor: colors.mediumGrey}}>
             {
-             status == "PLACED" ? (
+             status == OrderStatus.PLACED ? (
                 <View style={{display: "flex", flexDirection: "row",height: 50, alignItems: "center"}}>
                   <View style={{height: 50, width: '50%', backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={() => updateOrder("ACCEPTED")}>
+                    <TouchableOpacity onPress={() => updateOrder(OrderStatus.ACCEPTED)}>
                       <HeaderText style={{color: 'white'}}>Accept</HeaderText>
                     </TouchableOpacity>
                   </View>
                   <View style={{height: 50, width: '50%', backgroundColor: colors.red, alignItems: 'center', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={() => updateOrder("DECLINED")}>
+                    <TouchableOpacity onPress={() => updateOrder(OrderStatus.DECLINED)}>
                       <HeaderText style={{color: 'white'}}>Decline</HeaderText>
                     </TouchableOpacity>
                   </View>
@@ -70,13 +74,13 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
               )
             }
             {
-              status == "ACCEPTED" ? (
+              status == OrderStatus.ACCEPTED ? (
                 <View style={{display: "flex", flexDirection: "row",height: 50, alignItems: "center"}}>
                   <View style={{height: 50, width: '50%', backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center'}}>
                       <HeaderText style={{color: colors.green}}>Accepted</HeaderText>
                   </View>
-                  <View style={{height: 50, width: '50%', backgroundColor: getColorAccordingToStatus("DELIVERED"), alignItems: 'center', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={() => updateOrder("DELIVERED")}>
+                  <View style={{height: 50, width: '50%', backgroundColor: getColorAccordingToStatus(OrderStatus.DELIVERED), alignItems: 'center', justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={() => updateOrder(OrderStatus.DELIVERED)}>
                       <HeaderText style={{color: 'white'}}>Delivered</HeaderText>
                     </TouchableOpacity>
                   </View>
@@ -88,8 +92,8 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
             {
               status == "DELIVERED" ? (
                 <View style={{display: "flex", flexDirection: "row",height: 50, alignItems: "center"}}>
-                  <View style={{height: 50, width: '100%', backgroundColor: getColorAccordingToStatus("COMPLETE"), alignItems: 'center', justifyContent: 'center'}}>
-                      <TouchableOpacity onPress={() => updateOrder("COMPLETED")}>
+                  <View style={{height: 50, width: '100%', backgroundColor: "black", alignItems: 'center', justifyContent: 'center'}}>
+                      <TouchableOpacity onPress={() => updateOrder(OrderStatus.COMPLETED)}>
                         <HeaderText style={{color: colors.white}}>Complete</HeaderText>
                       </TouchableOpacity> 
                   </View>
@@ -99,7 +103,7 @@ const OrderDetailTab: React.FC<Props> = ({navigation, route, invMetadata}) => {
               )
             }
             {
-              status == "DECLINED" ? (
+              status == OrderStatus.DECLINED ? (
                 <View style={{display: "flex", flexDirection: "row",height: 50, justifyContent: "center", alignItems: "center"}}>
                   <HeaderText>Order has been declined</HeaderText>
                 </View>
